@@ -4,7 +4,7 @@ version = "0.2.2"
 authors = ["maarten <maarten@greentic.com>"]
 description = "The fastest, most secure and extendable digital workers platform"
 license = "MIT"
-repository = "https://github.com/greentic-ai/greentic"
+repository = "https://github.com/greenticai/greentic"
 edition = "2024"
 
 
@@ -96,4 +96,5 @@ base64 = "0.22.1"
 [dev-dependencies]
 url = "2.5.4"
 channel_plugin = { version="0.2.0", path = "crates/channel_plugin"}
+
 
