@@ -22,7 +22,7 @@ const DEV_BIN: &str = "greentic-dev";
 const OP_BIN: &str = "greentic-operator";
 
 const LOCALES_JSON: &str = include_str!("../../assets/i18n/locales.json");
-const EN_JSON: &str = include_str!("../../assets/i18n/en.json");
+include!(concat!(env!("OUT_DIR"), "/embedded_i18n.rs"));
 
 fn main() {
     let raw_args: Vec<String> = env::args().collect();
@@ -441,10 +441,8 @@ fn expand_into_target(source_dir: &Path, target_dir: &Path) -> Result<(), String
             continue;
         }
 
-        if looks_like_gzip(&data) {
-            if extract_targz_bytes(&data, target_dir).is_ok() {
-                continue;
-            }
+        if looks_like_gzip(&data) && extract_targz_bytes(&data, target_dir).is_ok() {
+            continue;
         }
 
         if extract_tar_bytes(&data, target_dir).is_ok() {
@@ -749,10 +747,12 @@ impl I18nCatalog {
                 set
             });
 
-        let en_map = parse_flat_json_map(EN_JSON).expect("valid en.json");
-
         let mut dictionaries = HashMap::new();
-        dictionaries.insert(normalize_locale("en"), en_map);
+        for (locale, raw_json) in EMBEDDED_LOCALES {
+            if let Ok(map) = parse_flat_json_map(raw_json) {
+                dictionaries.insert(normalize_locale(locale), map);
+            }
+        }
 
         Self {
             default_locale,

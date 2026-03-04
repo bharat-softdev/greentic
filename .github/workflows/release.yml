@@ -3,7 +3,7 @@ name: Publish And Release
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 permissions:
@@ -95,10 +95,13 @@ jobs:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             archive_format: tgz
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            archive_format: tgz
           - os: macos-13
             target: x86_64-apple-darwin
             archive_format: tgz
-          - os: macos-14
+          - os: macos-15
             target: aarch64-apple-darwin
             archive_format: tgz
           - os: windows-latest
@@ -163,5 +166,5 @@ jobs:
         with:
           tag_name: ${{ needs.metadata.outputs.tag }}
           name: ${{ needs.metadata.outputs.version }}
-          target_commitish: master
+          target_commitish: main
           files: dist/**/gtc-*

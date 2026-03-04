@@ -5,8 +5,9 @@ edition = "2024"
 rust-version = "1.91"
 description = "Greentic - The operation system for digital workers"
 license = "MIT"
-repository = "https://github.com/greentic-ai-org/greentic"
+repository = "https://github.com/greenticai/greentic"
 homepage = "https://greentic.ai"
+build = "build.rs"
 
 [dependencies]
 async-trait = "0.1"

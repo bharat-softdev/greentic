@@ -21,7 +21,7 @@ rate becomes unacceptable at enterprise scale.
 
 Greentic was designed with one core principle:
 
-> Deterministic by default. **Just enough AI** to add value.
+> Deterministic by default. **Just enough AI** to add real business value.
 
 Greentic gives you:
 
@@ -36,6 +36,8 @@ This is infrastructure for serious production systems.
 ------------------------------------------------------------------------
 
 Digital Workers need to interact with humans. That is why Greentic speaks over 50 languages: Hi, Hello, Hola, Bonjour, Hallo, Ciao, Olá, Привет, Здравейте, Γειά, Merhaba, مرحبا, שלום, नमस्ते, হ্যালো, ਸਤ ਸ੍ਰੀ ਅਕਾਲ, નમસ્તે, வணக்கம், నమస్తే, ನಮಸ್ಕಾರ, നമസ്കാരം, ආයුබෝවන්, வணக்கம், สวัสดี, Xin chào, Halo, Hai, Kumusta, 你好, 你好嗎, こんにちは, こんにちは, 안녕하세요, Сәлем, Салом, Салом, Сәләм, Сайн байна уу, မင်္ဂလာပါ, ជំរាបសួរ, ສະບາຍດີ, გამარჯობა, Բարև, Salut, Ahoj, Čau, Cześć, Szia, Bună, Zdravo, Bok, Pozdrav, Hej, Hei, Halló, Dia dhuit, Ola, Sawubona, Jambo.
+
+------------------------------------------------------------------------
 
 # What Is a Digital Worker?
 
@@ -346,7 +348,7 @@ granted.
 | Deterministic flows | ✅       | ❌        | ⚠️   | ⚠️     |
 | Capability sandbox  | ✅       | ❌        | ❌   | ❌     |
 | Sandboxed runtime   | ✅       | ❌        | ❌   | ❌     |
-| Just-enough LLM     | ✅       | ❌        | ❌   | ❌     |
+| Just-Enough AI      | ✅       | ❌        | ❌   | ❌     |
 | Multi-tenant infra  | ✅       | ⚠️        | ❌   | ❌     |
 | Secure MCP          | ✅       | ❌        | ❌   | ❌     |
 
@@ -434,7 +436,7 @@ See LICENSE for details.
 
 Greentic is not a demo framework.
 
-It is deterministic digital worker infrastructure designed for
+It is deterministic digital worker operating system designed for
 enterprise-scale production systems.
 
 If you want AI — without losing control — Greentic is your foundation.
