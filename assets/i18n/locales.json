@@ -1,7 +1,6 @@
 {
   "default": "en",
   "supported": [
-    "ar",
     "ar-AE",
     "ar-DZ",
     "ar-EG",
@@ -11,6 +10,7 @@
     "ar-SD",
     "ar-SY",
     "ar-TN",
+    "ar",
     "ay",
     "bg",
     "bn",
@@ -18,8 +18,8 @@
     "da",
     "de",
     "el",
-    "en",
     "en-GB",
+    "en",
     "es",
     "et",
     "fa",
