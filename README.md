@@ -5,7 +5,7 @@
 [![Deterministic](https://img.shields.io/badge/model-Deterministic-important)]()
 [![AI](https://img.shields.io/badge/AI-Just--Enough-orange)]()
 
-## Deterministic Digital Workers with 'Just Enough AI' for Enterprise-Grade Automation
+## Deterministic Digital Workers with 'Just Enough AI' for Enterprise Automation
 
 ------------------------------------------------------------------------
 
