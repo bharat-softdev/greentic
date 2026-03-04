@@ -103,6 +103,11 @@ run_translate() {
   sync_locales_meta
 }
 
+# Backward-compat shim for older call-sites that still invoke `un_translate`.
+un_translate() {
+  run_translate "$@"
+}
+
 run_validate() {
   local cmd
   cmd="$(translator_cmd)"
@@ -154,6 +159,7 @@ fi
 
 case "$MODE" in
   translate) run_translate ;;
+  un_translate) run_translate ;;
   validate) run_validate ;;
   status) run_status ;;
   all)
