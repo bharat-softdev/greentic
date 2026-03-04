@@ -21,7 +21,7 @@ rate becomes unacceptable at enterprise scale.
 
 Greentic was designed with one core principle:
 
-> Deterministic by default. Just enough LLM to add value.
+> Deterministic by default. **Just enough AI** to add value.
 
 Greentic gives you:
 
