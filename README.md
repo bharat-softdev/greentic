@@ -1,419 +1,438 @@
-IMPORTANT: The next-generation Greentic will soon launch. This repo is just a proof of concept. Go to [Geentic.ai](https://greentic.ai) and join the waiting list to get access to the open source digital worker platform that will scale to thousands of workers per employee...
-<table style="border: none;">
-<tr>
-<td><img src="assets/greentic-logo-very-small.png" alt="Greentic.AI Logo" width="150"></td>
-<td><h1>Greentic.AI 🚀</h1><br><strong>Build armies of digital workers:</strong> fast, secure, and extendable. Automate anything using Wasm tools, channels, agents, and flows.</td>
-</tr>
-</table>
-Now with: <strong>intelligent agents</strong> and <strong>processes</strong>!
+# Greentic - The Operating System for Digital Workers
 
----
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](#license)
+[![WASM](https://img.shields.io/badge/runtime-WASM%20%7C%20WASIp2-green)]()
+[![Deterministic](https://img.shields.io/badge/model-Deterministic-important)]()
+[![AI](https://img.shields.io/badge/AI-Just--Enough-orange)]()
 
-![Telegram Weather Bot](https://greentic.ai/assets/telegram-weather-bot.gif)
+## Deterministic Digital Workers for Enterprise-Grade Automation
 
-Greentic.ai is now at version 0.2.0, offering a growing store with free flows, plugins, and tools to get you started. You can easily build your own flows, tools, and plugins, including those that connect to APIs without requiring authentication or API keys. Support for OAuth integrations is coming in v0.3.0, and full Cloud deployment will be available in v0.4.0.
+------------------------------------------------------------------------
 
-Looking ahead, the [vision for v1.0.0](./docs/VISION.md) is ambitious: imagine simply messaging via WhatsApp, Teams, Slack, or Telegram to request a digital worker—Greentic.ai will create it automatically based on your request, just like ChatGPT.
+# Why Greentic?
 
-Discover how [Greentic.ai enables revenue oppotunities for partners](./docs/VISION.md) and be part of the future of intelligent automation.
+AI demos are easy.
 
----
+Production-grade AI infrastructure is not.
 
-## 📋 Table of Contents
+Most “agentic” platforms allow LLMs to call tools dynamically. This is
+powerful — but unpredictable. Even a 0.1% hallucination or misexecution
+rate becomes unacceptable at enterprise scale.
 
-1. [Introduction](#introduction)
-2. [What is a Digital Worker?](#wat-is-a-digital-worker)
-3. [Key Concepts](#key-concepts)
-   - [Tools (MCP in Wasm)](#tools-mcp-in-wasm)
-   - [Channels](#channels)
-   - [Processes](#processes)
-   - [Agents](#agents)
-4. [Getting Started](#getting-started)
-5. [Quick Flow Example (YAML)](#quick-flow-example-yaml)
-6. [Controlling Flows, Channels & Tools](#controlling-flows-channels--tools)
-7. [Coming Soon](#coming-soon)
-8. [Need Custom Agentic Automation?](#need-custom-agentic-automation)
-9. [Contributing](#contributing)
-10. [License](#license)
+Greentic was designed with one core principle:
 
----
+> Deterministic by default. Just enough LLM to add value.
 
-## 📝 Introduction
+Greentic gives you:
 
-Greentic.AI is an open-source platform designed to let you build, deploy, and manage digital workers at lightning speed.
+-   Predictable orchestration
+-   Explicit capability control
+-   Self-describing components
+-   Multi-tenant governance
+-   Secure AI integration
 
-- **Fastest** runtime with zero cold-starts for WebAssembly tools.
-- **Extendable** architecture: plug in your own channels, tools, agents and processes, all defined in an easy to understand text-based flow.
-- **Secure** by design: tools are sandboxed inside Wasm allowing securely running untrusted third-party MCP tools.
-- **Observability** via OpenTelemetry integrations
+This is infrastructure for serious production systems.
 
----
+------------------------------------------------------------------------
 
-## 🤖 What is a Digital Worker?
+# What Is a Digital Worker?
 
-A **Digital Worker** is a flow that acts autonomously and intelligently to handle a complete task, from end to end.
+A **digital worker** is a deterministic flow that handles a complete
+task from start to finish.
 
-It:
+It typically combines:
 
-- Listens for messages (via **Channels** like Telegram or Slack)
-- Extracts meaning or decisions (via **Agents**, powered by LLMs)
-- Calls APIs or executes functions (via **Tools** written in Wasm)
-- Handles control logic (via **Processes** like retries, conditionals, loops)
+-   Message or event intake
+-   Explicit orchestration logic
+-   Component/tool execution
+-   Optional AI steps where useful
 
-Flows link these components into one cohesive automation. Your digital workers are secure, modular, and language-agnostic.
+The goal is controllable automation with predictable behavior.
 
----
+The more boring and repetitive the task, the better to migrate it to digital workers. If you don't know how to do it, how are you going to ask AI to do it for you? Will it do a brilliant job or an aweful job. You don't know. If you are bored of doing it, do you mind if digital workers do it for you?
 
-## 🔑 Key Concepts
+------------------------------------------------------------------------
 
-### Tools (MCP in Wasm)
+# Core Concepts
 
-- **MCP** (Model-Context Protocol) modules compile to WebAssembly.
-- Each tool can define its own actions, inputs, outputs, and run logic securely.
-- Tools live in `tools/` and are called by the flows.
+-   **Components:** Self-describing executable units with explicit capabilities.
+-   **Flows:** Deterministic orchestration graphs connecting components.
+-   **Packs/Bundles:** Distribution and deployment grouping layers.
+-   **Operator:** Runtime boundary that enforces capability, tenancy and other controls.
 
-👉 [Learn how to build MCP Tools](./docs/TOOLS.md)
+------------------------------------------------------------------------
 
-### Channels
+# High-Level Features
 
-- **Channels** allow flows to send/receive messages to/from the outside world.
-- Examples: Telegram, Slack, Email, HTTP Webhooks.
+## 🧱 Component-Based Architecture
 
-👉 [How to build Channel Plugins](./docs/PLUGIN.md)
+-   WebAssembly (WASM) components (100x smaller than Docker)
+-   WASIp2 sandboxing (100x faster and more secure than Docker)
+-   `component@0.6.0` self-describing contracts
+-   Explicit lifecycle (setup / update / remove)
+-   Capability-based security model - you can only do what you were approved to do
 
-### Processes
+## 🔁 Deterministic Orchestration
 
-- **Processes** are a collection of builtIn processes and soon extendable via Wasm.
-- Debug: allows you to easily understand the output of the previous flow nodes.
-- Script: create a script in Rhai to programme logic.
-- Template: a Handlebars-based template processor for rending string output.
-- QA: A dynamic, multi-question form-like process with optional validation, LLM user assistance and routing.   
-- Defined declaratively in YAML.
+-   Flow graph execution
+-   Explicit transitions
+-   Session support
+-   Shared state support
+-   Canonical CBOR runtime format (faster and smaller)
 
-👉 [Learn more about Processes](./docs/PROCESSES.md)
+## 💬 Messaging & Events
 
-### Agents
+-   Slack, Teams, Webex, WhatsApp, Telegram, WebChat
+-   Webhooks, Email & Timers
+-   Adaptive Card (=mini-apps) with translation/downscaling
+-   Session-based workflows
+-   Stateless event flows
 
-- **Agents** are LLM-powered nodes capable of autonomous decision-making.
-- `openai` calls the OpenAI Chat Completions API. Provide an `OPENAI_KEY` secret and optionally `OPENAI_URL` to target a compatible endpoint.
-- `ollama` connects to a local Ollama server for chat, generation, and embeddings. Configure the model, mode, and tools per flow.
-- Coming Soon: richer memory, tool orchestration, and goal-following behaviours.
+## 🤖 AI — Controlled & Explicit
 
-👉 [Learn more about Agents](./docs/AGENTS.md)
+-   Chat2Flow (intent → flow routing)
+-   Chat2Data (natural language → system dialect) - commercial
+-   Explicit LLM components
+-   Capability-bound AI
+-   No unbounded autonomous agents
 
----
+## ⚡ MCP Without the Overhead
 
-## 🦀 Prerequisites: Install Rust
+-   WASIX-based MCP (KBs to MB)
+-   No JSON-RPC or SSE (no network server in front of an API server)
+-   Millisecond local execution
+-   Everything remains a component
 
-To build and run this project, you need to have [Rust](https://www.rust-lang.org/tools/install) installed.
+## 🔌 Extensible by Design
 
-If you don’t have Rust yet, the easiest way is via `rustup`:
+Extension packs enable:
 
-```bash
+-   Secrets backends
+-   Redis/shared state
+-   OpenTelemetry
+-   OAuth providers
+-   Access policies (personalise it)
+-   Routing engines (personalise it)
+-   Audit/Compliance/Analytics (personalise it)
+-   Terraform/K8S/other deployers
+-   Anything you want [within reason ;-)]
+
+------------------------------------------------------------------------
+
+# Installation
+
+Install Greentic via cargo-binstall (cargo install cargo-binstall):
+
+``` bash
+cargo binstall gtc
+gtc install
+```
+Run dependency checks:
+
+``` bash
+gtc doctor
+```
+
+Install modes:
+
+``` bash
+# Public tools only
+gtc install
+
+# Tenant-authorized install (key via env)
+export GREENTIC_ACME_KEY=ghp_xxxxxx
+gtc install --tenant acme
+
+# Tenant-authorized install (key via flag)
+gtc install --tenant acme --key ghp_xxxxxx
+```
+
+Tenant key env var format:
+
+- `GREENTIC_<TENANT>_KEY`
+- Tenant normalization: uppercase, non-alphanumeric as `_`, collapse repeated `_`, trim leading/trailing `_`
+
+Artifact install locations:
+
+- Tools: `$CARGO_HOME/bin` (fallback `~/.cargo/bin`)
+- Components: `~/.greentic/artifacts/components/<name>/...`
+- Packs: `~/.greentic/artifacts/packs/<name>/...`
+- Bundles: `~/.greentic/artifacts/bundles/<name>/...`
+- Windows root: `%USERPROFILE%\\.greentic\\artifacts\\...`
+
+Exit policy:
+
+- If public tools install fails, tenant install is skipped and `gtc` exits with the same non-zero code.
+- Tenant artifacts are installed best-effort per item, but overall exit is non-zero if any tenant artifact fails.
+
+------------------------------------------------------------------------
+
+# Prerequisites
+
+Install Rust 1.91 or better via `rustup` if needed:
+
+``` bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-```
-You might have to restart the terminal to get Rust to work. Test it via 'cargo --version'
----
-
-## 🚀 Getting Started: Install Greentic
-
-Install Greentic.AI via:
-
-```bash
-cargo install greentic
+rustup toolchain install 1.91.0
+rustup target add wasm32-wasip2
 ```
 
-### 🔧 Initialise your environment
+Confirm installation:
 
-The first time you use Greentic, run:
-
-```bash
-greentic init
+``` bash
+cargo --version
 ```
 
-This will:
+------------------------------------------------------------------------
 
-- Create the Greentic configuration directories
-- Register your user and generate a `GREENTIC_TOKEN`
-- Allow you to pull flows, channels, tools, etc. from [greenticstore.com](https://greenticstore.com)
-- Will give an error about the TELEGRAM_TOKEN and WEATHERAPI_KEY not being set. Read about how to create a 
-[Telegram bot](./docs/TELEGRAM.md) and get your free WEATHERAPI_KEY at [https://www.weatherapi.com/](https://www.weatherapi.com/)
+# Quickstart (5-Minute Demo)
 
----
-
-### 🌦️ Example: Telegram Weather Bot
-
-Pull your first flow: (greentic init does this for you already)
-
-```bash
-greentic flow pull weather_bot_telegram.ygtc
+``` bash
+# Make your first bundle
+gtc wizard --answers oci://<TODO>
+# Setup demo environment
+gtc op setup --bundle ./myfirst.gtbundle
+# Start operator
+gtc op start --bundle ./myfirst.gtbundle
 ```
 
-Then:
+In your browser go to:
+[Open Greentic Webchat at localhost:8080](http://localhost:8080)
 
-1. [Create and configure a Telegram bot](./docs/TELEGRAM.md), and add your token:
+You now have a running deterministic digital worker runtime.
 
-   ```bash
-   greentic secrets add TELEGRAM_TOKEN <your_token>
-   ```
+------------------------------------------------------------------------
 
-2. [Sign up to WeatherAPI](https://www.weatherapi.com/signup.aspx) and add your free API key:
+# CLI Overview
 
-   ```bash
-   greentic secrets add WEATHERAPI_KEY <your_key>
-   ```
+## Development Commands
 
-3. (Optional) To enable AI-powered queries like *“What’s the weather in London tomorrow?”*:
-
-   - [Install Ollama](https://ollama.com/download)
-   - Pull the model:
-
-     ```bash
-     ollama pull gemma:instruct
-     ```
-
----
-
-### ▶️ Run the bot
-
-```bash
-greentic run
+``` bash
+gtc dev wizard
+gtc dev pack new --help
+gtc dev flow add-step --help
+gtc dev flow update-step --help
+gtc dev flow remove-step --help
+gtc dev cbor <file>.cbor --help
 ```
 
-You should now have a fully working **Telegram Weather Bot**.
+## Operator Commands
 
----
-
-## 🛠️ Creating Your Own Flows
-
-To deploy your own flows:
-
-```bash
-greentic flow deploy <file>.ygtc
+``` bash
+gtc wizard
+gtc op setup --bundle <something>.gtbundle
+gtc op start --bundle <something>.gtbundle
 ```
 
-To start a flow:
+Operator supports:
 
-```bash
-greentic flow start <flow_id>
-```
+-   Local demo CLI
+-   Production mTLS REST API
 
----
+------------------------------------------------------------------------
 
-## 🛠 Quick Flow Example (YAML)
+# Architecture Overview
 
-```yaml
-id: weather_bot
-title: Get your weather prediction
-description: >
-  This flow shows how you can combine either a fixed question and answer process
-  with an AI fallback if the user is not answering the questions correctly.
-channels:
-  - telegram  
-nodes:
-  # 1) Messages come in via Telegram
-  telegram_in:
-    channel: telegram
-    in: true
+Greentic builds digital workers in layers:
 
-   # 2) QA node: ask for the city and fallback to the OllamaAgent if more than 3 words are used
-  extract_city:
-    qa:
-      welcome_template: "Hi there! Let's get your weather forecast."
-      questions:
-        - id: q_location
-          prompt: "👉 What location would you like a forecast for?"
-          answer_type: text
-          state_key: q
-          max_words: 3
-      fallback_agent:
-        type: ollama
-        model: gemma:instruct
-        task: |
-          The user wants the weather forecast. Find out for which city or location they want the weather and
-          assign this to a state value named `q`. If they mention the days, assign the number to a state value named `days`, 
-          otherwise use `3` for `days`.
-          If you are unsure about the place (`q`), ask the user to clarify where they want the weather forecast for.
-      routing:
-        - to: forecast_weather
-  # 3) “forecast_weather”: the Weather API tool, using the JSON from parse_request.
-  forecast_weather:
-    tool:
-      name: weather_api
-      action: forecast_weather
-    parameters:
-      q: "{{extract_city.payload.city}}"
-      days: 3
+    Component → Flow → Pack → Bundle → Operator
 
-  # 4) “weather_template”: format the weather API’s JSON into a friendly sentence.
-  weather_out_template:
-    template: |
-      🌤️ Weather forecast for {{payload.location.name}}:
+## Component
 
-      {{#each payload.forecast.forecastday}}
-      📅 Day {{@indexPlusOne}} ({{this.date}}):
-      • High: {{this.day.maxtemp_c}}°C
-      • Low: {{this.day.mintemp_c}}°C
-      • Condition: {{this.day.condition.text}}
-      • Rain? {{#if (eq this.day.daily_will_it_rain 1)}}Yes{{else}}No{{/if}}
+-   WASM module
+-   Self-describing contract
+-   Explicit capabilities
+-   Deterministic lifecycle
 
-      {{/each}}
+## Flow
 
-  # 5) “telegram_out”: send the forecast back to Telegram.
-  telegram_out:
-    channel: telegram
-    out: true
+-   Graph of nodes
+-   YAML authoring → CBOR production
+-   Explicit transitions
 
-connections:
-  telegram_in:
-    - extract_city
+## Pack
 
-  extract_city:
-    - forecast_weather
+-   ZIP distribution unit
+-   Components + flows
+-   Versioned & validated
+-   `greentic-pack doctor`
 
-  forecast_weather:
-    - weather_out_template
+## Bundle
 
-  weather_out_template:
-    - telegram_out 
-```
+-   Defines deployed packs
+-   Configures tenant/team access
+-   Enables extensions and providers (messaging/events)
 
----
+## Operator
 
-## ⚙️ Controlling Flows, Channels & Tools
+-   Setup phase (QA, config, warmup)
+-   Start phase (serve traffic)
+-   Capability enforcement
+-   WASM JIT caching
 
-```bash
-# Validate a flow before deploying. Afterwards you can start/stop the flow
-greentic flow validate <file>.ygtc 
-greentic flow deploy <file>.ygtc
-greentic flow start <flow-id>
-greentic flow stop <flow-id>
-```
+------------------------------------------------------------------------
 
----
+# Messaging vs Events
 
-## ⚡ Fast-start Snapshots
+## Messaging
 
-Snapshots capture the current runtime state (flows, tools, channels, processes, configs, secrets).
+-   Session-based workflows
+-   Adaptive card support
+-   Provider-specific translation / downscaling (=WhatsApp does not support cards)
+-   Multi-step orchestration
 
-### Create a snapshot
+## Events
 
-```bash
-greentic snapshot export --file out.gtc
-```
+-   Fire-and-forget
+-   Timers
+-   Webhooks
+-   SMS
+-   Email
+-   Stateless execution
 
-### Validate a snapshot locally
+------------------------------------------------------------------------
 
-```bash
-greentic snapshot validate --file out.gtc --json
-```
+# Deterministic Model
 
-### Take & validate the current workspace in one go
+Greentic avoids:
 
-```bash
-greentic snapshot validate --take --json
-```
+-   Autonomous tool-calling LLM agents
+-   Unbounded execution graphs
+-   Ambient authority
 
-### ValidationPlan schema
+Instead:
 
-`greentic snapshot validate` returns a `ValidationPlan` JSON payload:
+-   Flows define execution paths
+-   AI for routing and execution is optional
+-   Capabilities are declared upfront
+-   Configuration is versioned & validated
 
-| Field | Type | Description |
-|---|---|---|
-| `ok` | bool | All requirements satisfied |
-| `summary` | string | Human-readable summary |
-| `missing_tools` | Vec<Req> | Required tools missing |
-| `missing_channels` | Vec<Req> | Required channels missing |
-| `missing_processes` | Vec<Req> | Required processes missing |
-| `missing_agents` | Vec<Req> | Required agents missing |
-| `missing_configs` | Vec<ConfigReq> | Config entries to set |
-| `missing_secrets` | Vec<SecretReq> | Secrets to provide |
-| `suggested_commands` | SuggestedCommands | Helper commands (install/config/secret) |
+Enterprise-ready by design.
 
-Each `Req` contains `{ id, version_req }`. `ConfigReq` and `SecretReq` include an `owner` (`kind` = tool/channel/process/agent) and optional `description`.
+------------------------------------------------------------------------
 
-### Example response with missing items
+# Multi-Tenancy
 
-```json
-{
-  "ok": false,
-  "summary": "2 items missing (1 tool, 1 secret)",
-  "missing_tools": [
-    { "id": "mcp.weather", "version_req": null }
-  ],
-  "missing_channels": [],
-  "missing_processes": [],
-  "missing_agents": [],
-  "missing_configs": [],
-  "missing_secrets": [
-    {
-      "key": "WEATHERAPI_KEY",
-      "owner": { "kind": "tool", "id": "weather_api" },
-      "description": "WeatherAPI.com API key for weather_api tool"
-    }
-  ],
-  "suggested_commands": {
-    "install": [
-      "greentic store install tool mcp.weather@latest"
-    ],
-    "config": [],
-    "secret": [
-      "greentic secrets add WEATHERAPI_KEY <VALUE>  # tool:weather_api"
-    ]
-  }
-}
-```
+Hierarchy:
 
-### Exit codes
+-   Global
+-   Tenant
+-   Team
+-   User
 
-* `0` – plan is OK
-* `2` – items missing (ideal for CI/CD)
+Operator denies everything by default. Access must be explicitly
+granted.
 
----
+------------------------------------------------------------------------
 
-## 🔭 Coming Soon
+# Performance Model
 
----
+-   WASM JIT warmup
+-   Millisecond execution
+-   No JSON-RPC latency
+-   Local MCP execution
+-   Deterministic payload passing
 
-## 🔭 Coming Soon
+------------------------------------------------------------------------
 
-- v0.3.0 oAuth MCP Tools - connect to any SaaS
-- v0.4.0 Serverless Cloud deployment of flows - greentic deploy <flow>
+# Comparison
 
-Roadmap:
-- More Agentic: memory persistence, vector databases, A2A,...
-- AI Flow Designer
-- Flow, Tools, Channels & Processes marketplace
+| Feature             | Greentic | LangChain | n8n | Zapier |
+|---------------------|----------|-----------|-----|--------|
+| Deterministic flows | ✅       | ❌        | ⚠️   | ⚠️     |
+| Capability sandbox  | ✅       | ❌        | ❌   | ❌     |
+| Sandboxed runtime   | ✅       | ❌        | ❌   | ❌     |
+| Just-enough LLM     | ✅       | ❌        | ❌   | ❌     |
+| Multi-tenant infra  | ✅       | ⚠️        | ❌   | ❌     |
+| Secure MCP          | ✅       | ❌        | ❌   | ❌     |
 
----
+------------------------------------------------------------------------
 
-## 📬 Need Custom Agentic Automation?
+# Repository Structure
 
-Have a specific use-case or need expert help?\
-Please fill out our form: [Agentic Automation Inquiry](https://forms.gle/h17SdjoUxozJf6XA6)
+-   `greentic-interfaces` - shared wasm interfaces
+-   `greentic-types` - shared structures
+-   `greentic-component` - everything component related
+-   `greentic-flow` - everything flows related
+-   `greentic-pack` - everything pack related
+-   `greentic-operator` - executing bundles with packs
+-   `greentic-dev` - developer tools
+-   `greentic-mcp` - everything mcp related
+-   `greentic-messaging-providers` - Teams, Slack, Webex, etc.
+-   `greentic-events-providers` - Webhook, timer, SMS, email, etc.
+-   Extension repos like oAuth, State, Session, Telemetry, etc.
+-   `component-*` - open source components
 
----
+------------------------------------------------------------------------
 
-## 🤝 Contributing
+# Sponsors
 
-We are actively looking for contributors and welcome contributions of all kinds!
+-   [Greentic AI Ltd](https://greentic.ai) - the company behind Greentic
+-   [3Point.ai](https://3point.ai) with 3AIgent powered by Greentic - get AI ROI quickly
+-   [DataArt](https://dataart.com) - core contributors and certified technical consultants
+-   [Become a sponsor](mailto:sponsor@greentic.ai)
 
-- Bug reports 🐞
-- Feature requests 🎉
-- Code & documentation PRs 📝
+------------------------------------------------------------------------
 
-1. Fork the repo
-2. Create a feature branch
-3. Open a PR against `main`
+# Contributing
 
-See [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for full guidelines.
+1.  Fork
+2.  Create feature branch
+3.  Add tests
+4.  Run `cargo fmt` & `cargo clippy`
+5.  Open PR
 
----
+Please include:
 
-## 📄 License
+-   Design explanation
+-   Migration notes (if applicable)
+-   Test coverage
 
-Distributed under the **MIT License**. See [LICENSE](./LICENSE) for details.
+------------------------------------------------------------------------
 
----
+# Governance & Versioning
 
-Thank you for checking out **Greentic.AI**—let’s build the future of automation together! 🚀
+-   Semantic versioning
+-   Stable `component@0.6.0` contract
+-   Controlled migration paths
+-   Explicit deprecations
+
+------------------------------------------------------------------------
+
+# Security
+
+Greentic enforces:
+
+-   Capability-based execution
+-   WASIp2 sandboxing
+-   No ambient authority
+-   Multi-tenant isolation
+
+Report vulnerabilities responsibly (see SECURITY.md).
+
+------------------------------------------------------------------------
+
+# Maintainers
+
+Greentic is maintained by the Greentic core team and contributors.
+
+Community governance roadmap coming soon.
+
+------------------------------------------------------------------------
+
+# License
+
+See LICENSE for details.
+
+------------------------------------------------------------------------
+
+# Final Perspective
+
+Greentic is not a demo framework.
+
+It is deterministic digital worker infrastructure designed for
+enterprise-scale production systems.
+
+If you want AI — without losing control — Greentic is your foundation.
+
+Visit [Greentic.ai](https://greentic.ai)

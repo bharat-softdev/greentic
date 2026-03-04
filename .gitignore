@@ -1,8 +1,1 @@
 /target
-.env
-.env-secrets
-Cargo.lock
-/logs
-/greentic
-/crates/channel_telegram/logs
-/crates/channel_ws/logs

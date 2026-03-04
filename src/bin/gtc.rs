@@ -1,0 +1,924 @@
+#[path = "../dist.rs"]
+mod dist;
+
+use std::borrow::Cow;
+use std::collections::{HashMap, HashSet};
+use std::env;
+use std::fs;
+use std::io::Read;
+use std::path::{Component, Path, PathBuf};
+use std::process::{Command as ProcessCommand, Stdio};
+use std::sync::OnceLock;
+
+use clap::{Arg, ArgAction, ArgMatches, Command};
+use directories::BaseDirs;
+use greentic_i18n::{normalize_locale, select_locale_with_sources};
+use serde::Deserialize;
+use serde_json::Value;
+
+use crate::dist::build_adapter;
+
+const DEV_BIN: &str = "greentic-dev";
+const OP_BIN: &str = "greentic-operator";
+
+const LOCALES_JSON: &str = include_str!("../../assets/i18n/locales.json");
+const EN_JSON: &str = include_str!("../../assets/i18n/en.json");
+
+fn main() {
+    let raw_args: Vec<String> = env::args().collect();
+    let exit_code = run(raw_args);
+    std::process::exit(exit_code);
+}
+
+fn run(raw_args: Vec<String>) -> i32 {
+    let i18n = i18n();
+    let locale = detect_locale(&raw_args, i18n.default_locale());
+
+    let cli = build_cli(&locale);
+    let matches = match cli.try_get_matches_from(raw_args) {
+        Ok(matches) => matches,
+        Err(err) => {
+            let _ = err.print();
+            return err.exit_code();
+        }
+    };
+
+    let debug = matches.get_flag("debug-router");
+
+    match matches.subcommand() {
+        Some(("version", _)) => {
+            println!("gtc {}", env!("CARGO_PKG_VERSION"));
+            0
+        }
+        Some(("doctor", _)) => run_doctor(&locale),
+        Some(("install", sub_matches)) => run_install(sub_matches, debug, &locale),
+        Some(("dev", sub_matches)) => {
+            let tail = collect_tail(sub_matches);
+            passthrough(DEV_BIN, &tail, debug, &locale)
+        }
+        Some(("op", sub_matches)) => {
+            let tail = collect_tail(sub_matches);
+            passthrough(OP_BIN, &tail, debug, &locale)
+        }
+        Some(("wizard", sub_matches)) => {
+            let tail = collect_tail(sub_matches);
+            let mut forwarded = vec!["wizard".to_string()];
+            forwarded.extend(tail);
+            passthrough(DEV_BIN, &forwarded, debug, &locale)
+        }
+        _ => 2,
+    }
+}
+
+fn build_cli(locale: &str) -> Command {
+    let cmd_args = passthrough_args();
+
+    Command::new(leak_str(t(locale, "gtc.app.name").into_owned()))
+        .version(env!("CARGO_PKG_VERSION"))
+        .about(t(locale, "gtc.app.about").into_owned())
+        .arg(
+            Arg::new("locale")
+                .long("locale")
+                .value_name("BCP47")
+                .num_args(1)
+                .global(true)
+                .help(t(locale, "gtc.arg.locale.help").into_owned()),
+        )
+        .arg(
+            Arg::new("debug-router")
+                .long("debug-router")
+                .action(ArgAction::SetTrue)
+                .global(true)
+                .help(t(locale, "gtc.arg.debug_router.help").into_owned()),
+        )
+        .subcommand(Command::new("version").about(t(locale, "gtc.cmd.version.about").into_owned()))
+        .subcommand(Command::new("doctor").about(t(locale, "gtc.cmd.doctor.about").into_owned()))
+        .subcommand(
+            Command::new("install")
+                .about(t(locale, "gtc.cmd.install.about").into_owned())
+                .arg(
+                    Arg::new("tenant")
+                        .long("tenant")
+                        .value_name("TENANT")
+                        .num_args(1)
+                        .help(t(locale, "gtc.arg.tenant.help").into_owned()),
+                )
+                .arg(
+                    Arg::new("key")
+                        .long("key")
+                        .value_name("KEY")
+                        .num_args(1)
+                        .help(t(locale, "gtc.arg.key.help").into_owned()),
+                ),
+        )
+        .subcommand(
+            Command::new("dev")
+                .about(t(locale, "gtc.cmd.dev.about").into_owned())
+                .arg(cmd_args.clone()),
+        )
+        .subcommand(
+            Command::new("op")
+                .about(t(locale, "gtc.cmd.op.about").into_owned())
+                .arg(cmd_args.clone()),
+        )
+        .subcommand(
+            Command::new("wizard")
+                .about(t(locale, "gtc.cmd.wizard.about").into_owned())
+                .arg(cmd_args),
+        )
+}
+
+fn passthrough_args() -> Arg {
+    Arg::new("args")
+        .num_args(0..)
+        .trailing_var_arg(true)
+        .allow_hyphen_values(true)
+}
+
+fn collect_tail(matches: &ArgMatches) -> Vec<String> {
+    matches
+        .get_many::<String>("args")
+        .map(|vals| vals.cloned().collect())
+        .unwrap_or_default()
+}
+
+fn detect_locale(raw_args: &[String], default_locale: &str) -> String {
+    let cli_locale = locale_from_args(raw_args);
+    let env_locale = env::var("GTC_LOCALE").ok();
+
+    let selected = select_locale_with_sources(
+        cli_locale.as_deref(),
+        Some(default_locale),
+        env_locale.as_deref(),
+        None,
+    );
+
+    i18n().normalize_or_default(&selected)
+}
+
+fn locale_from_args(raw_args: &[String]) -> Option<String> {
+    let mut iter = raw_args.iter().skip(1);
+    while let Some(arg) = iter.next() {
+        if arg == "--locale" {
+            return iter.next().cloned();
+        }
+        if let Some(value) = arg.strip_prefix("--locale=") {
+            return Some(value.to_string());
+        }
+    }
+    None
+}
+
+fn run_install(sub_matches: &ArgMatches, debug: bool, locale: &str) -> i32 {
+    println!("{}", t(locale, "gtc.install.public_mode"));
+
+    let public_args = vec!["install".to_string(), "tools".to_string()];
+    let public_status = passthrough(DEV_BIN, &public_args, debug, locale);
+    if public_status != 0 {
+        return public_status;
+    }
+
+    let tenant = sub_matches
+        .get_one::<String>("tenant")
+        .map(|v| v.trim().to_string())
+        .filter(|v| !v.is_empty());
+
+    let Some(tenant) = tenant else {
+        return 0;
+    };
+
+    println!(
+        "{}",
+        tf(
+            locale,
+            "gtc.install.tenant_mode",
+            &[("tenant", tenant.as_str())]
+        )
+    );
+
+    let cli_key = sub_matches.get_one::<String>("key").cloned();
+    let key = match resolve_tenant_key(cli_key, &tenant, locale) {
+        Ok(value) => value,
+        Err(err) => {
+            eprintln!("{err}");
+            return 1;
+        }
+    };
+
+    let adapter = match build_adapter() {
+        Ok(adapter) => adapter,
+        Err(err) => {
+            eprintln!(
+                "{}: {err}",
+                t(locale, "gtc.err.distribution_client_missing")
+            );
+            return 1;
+        }
+    };
+
+    let manifest_ref = format!(
+        "oci://ghcr.io/greentic-biz/{tenant}/install-manifest:latest",
+        tenant = tenant
+    );
+
+    let manifest_bytes = match adapter.pull_bytes(&manifest_ref, &key) {
+        Ok(bytes) => bytes,
+        Err(err) => {
+            eprintln!(
+                "{}: {err}",
+                tf(
+                    locale,
+                    "gtc.err.pull_failed",
+                    &[("oci", manifest_ref.as_str())]
+                )
+            );
+            return 1;
+        }
+    };
+
+    let manifest: InstallManifest = match serde_json::from_slice(&manifest_bytes) {
+        Ok(manifest) => manifest,
+        Err(err) => {
+            eprintln!("{}: {err}", t(locale, "gtc.err.invalid_manifest"));
+            return 1;
+        }
+    };
+
+    let cargo_bin_dir = match resolve_cargo_bin_dir() {
+        Ok(path) => path,
+        Err(err) => {
+            eprintln!("{}: {err}", t(locale, "gtc.err.install_dir"));
+            return 1;
+        }
+    };
+
+    let artifacts_root = match resolve_artifacts_root() {
+        Ok(path) => path,
+        Err(err) => {
+            eprintln!("{}: {err}", t(locale, "gtc.err.install_dir"));
+            return 1;
+        }
+    };
+
+    let mut any_failed = false;
+
+    for item in manifest.items {
+        let result = install_manifest_item(
+            adapter.as_ref(),
+            &key,
+            &item,
+            &cargo_bin_dir,
+            &artifacts_root,
+            locale,
+        );
+        match result {
+            Ok(()) => {
+                println!(
+                    "{}",
+                    tf(
+                        locale,
+                        "gtc.install.item_ok",
+                        &[("kind", item.kind.as_str()), ("name", item.name.as_str())]
+                    )
+                );
+            }
+            Err(err) => {
+                any_failed = true;
+                eprintln!(
+                    "{}: {err}",
+                    tf(
+                        locale,
+                        "gtc.install.item_fail",
+                        &[("kind", item.kind.as_str()), ("name", item.name.as_str())]
+                    )
+                );
+            }
+        }
+    }
+
+    if any_failed {
+        eprintln!("{}", t(locale, "gtc.install.summary_failed"));
+        1
+    } else {
+        println!("{}", t(locale, "gtc.install.summary_ok"));
+        0
+    }
+}
+
+fn install_manifest_item(
+    adapter: &dyn dist::DistAdapter,
+    key: &str,
+    item: &ManifestItem,
+    cargo_bin_dir: &Path,
+    artifacts_root: &Path,
+    locale: &str,
+) -> Result<(), String> {
+    let temp = tempfile::tempdir().map_err(|e| e.to_string())?;
+    let staged = temp.path().join("staged");
+    fs::create_dir_all(&staged).map_err(|e| e.to_string())?;
+
+    adapter
+        .pull_to_dir(&item.oci, key, &staged)
+        .map_err(|e| format!("{}: {e}", t(locale, "gtc.err.pull_failed")))?;
+
+    match item.kind {
+        ArtifactKind::Tool => install_tool_artifact(&staged, cargo_bin_dir, &item.name),
+        ArtifactKind::Component => {
+            install_non_tool_artifact(artifacts_root, "components", item, &staged)
+        }
+        ArtifactKind::Pack => install_non_tool_artifact(artifacts_root, "packs", item, &staged),
+        ArtifactKind::Bundle => install_non_tool_artifact(artifacts_root, "bundles", item, &staged),
+    }
+}
+
+fn install_non_tool_artifact(
+    artifacts_root: &Path,
+    folder: &str,
+    item: &ManifestItem,
+    staged: &Path,
+) -> Result<(), String> {
+    let target = artifacts_root.join(folder).join(&item.name);
+    if target.exists() {
+        fs::remove_dir_all(&target).map_err(|e| e.to_string())?;
+    }
+    fs::create_dir_all(&target).map_err(|e| e.to_string())?;
+    expand_into_target(staged, &target)
+}
+
+fn install_tool_artifact(
+    staged: &Path,
+    cargo_bin_dir: &Path,
+    fallback_name: &str,
+) -> Result<(), String> {
+    fs::create_dir_all(cargo_bin_dir).map_err(|e| e.to_string())?;
+
+    let expanded = tempfile::tempdir().map_err(|e| e.to_string())?;
+    expand_into_target(staged, expanded.path())?;
+
+    let mut candidates = gather_tool_candidates(expanded.path())?;
+    if candidates.is_empty() {
+        let fallback =
+            find_first_file(expanded.path())?.ok_or_else(|| "no tool binary found".to_string())?;
+        candidates.push((fallback_name.to_string(), fallback));
+    }
+
+    for (name_hint, source) in candidates {
+        let file_name = source
+            .file_name()
+            .and_then(|v| v.to_str())
+            .map(|v| v.to_string())
+            .filter(|v| !v.is_empty())
+            .unwrap_or(name_hint);
+
+        let target = cargo_bin_dir.join(file_name);
+        fs::copy(&source, &target).map_err(|e| e.to_string())?;
+        set_executable_if_unix(&target)?;
+    }
+
+    Ok(())
+}
+
+fn gather_tool_candidates(root: &Path) -> Result<Vec<(String, PathBuf)>, String> {
+    let files = list_files_recursive(root)?;
+    let mut out = Vec::new();
+
+    for file in files {
+        let rel = file.strip_prefix(root).unwrap_or(&file);
+        let in_bin_dir = rel.components().any(|c| c.as_os_str() == "bin");
+        let file_name = match file.file_name().and_then(|v| v.to_str()) {
+            Some(v) => v,
+            None => continue,
+        };
+
+        let looks_tool_name = file_name == "gtc"
+            || file_name.starts_with("greentic-")
+            || file_name.ends_with(".exe")
+            || file_name.ends_with(".cmd")
+            || file_name.ends_with(".bat");
+
+        if in_bin_dir || looks_tool_name {
+            out.push((file_name.to_string(), file));
+        }
+    }
+
+    Ok(out)
+}
+
+fn find_first_file(root: &Path) -> Result<Option<PathBuf>, String> {
+    let mut files = list_files_recursive(root)?;
+    files.sort();
+    Ok(files.into_iter().next())
+}
+
+fn list_files_recursive(root: &Path) -> Result<Vec<PathBuf>, String> {
+    let mut out = Vec::new();
+    recurse_files(root, &mut out)?;
+    Ok(out)
+}
+
+fn recurse_files(root: &Path, out: &mut Vec<PathBuf>) -> Result<(), String> {
+    for entry in fs::read_dir(root).map_err(|e| e.to_string())? {
+        let entry = entry.map_err(|e| e.to_string())?;
+        let path = entry.path();
+        if path.is_dir() {
+            recurse_files(&path, out)?;
+        } else if path.is_file() {
+            out.push(path);
+        }
+    }
+    Ok(())
+}
+
+fn expand_into_target(source_dir: &Path, target_dir: &Path) -> Result<(), String> {
+    fs::create_dir_all(target_dir).map_err(|e| e.to_string())?;
+
+    let files = list_files_recursive(source_dir)?;
+    for file in files {
+        let data = fs::read(&file).map_err(|e| e.to_string())?;
+
+        if looks_like_zip(&data) {
+            extract_zip_bytes(&data, target_dir)?;
+            continue;
+        }
+
+        if looks_like_gzip(&data) {
+            if extract_targz_bytes(&data, target_dir).is_ok() {
+                continue;
+            }
+        }
+
+        if extract_tar_bytes(&data, target_dir).is_ok() {
+            continue;
+        }
+
+        let name = file
+            .file_name()
+            .ok_or_else(|| "invalid filename".to_string())?;
+        fs::copy(&file, target_dir.join(name)).map_err(|e| e.to_string())?;
+    }
+
+    Ok(())
+}
+
+fn looks_like_zip(data: &[u8]) -> bool {
+    data.len() >= 4 && &data[0..4] == b"PK\x03\x04"
+}
+
+fn looks_like_gzip(data: &[u8]) -> bool {
+    data.len() >= 2 && data[0] == 0x1F && data[1] == 0x8B
+}
+
+fn extract_zip_bytes(data: &[u8], out_dir: &Path) -> Result<(), String> {
+    let cursor = std::io::Cursor::new(data);
+    let mut zip = zip::ZipArchive::new(cursor).map_err(|e| e.to_string())?;
+
+    for i in 0..zip.len() {
+        let mut entry = zip.by_index(i).map_err(|e| e.to_string())?;
+        let Some(path) = entry.enclosed_name().map(|p| p.to_path_buf()) else {
+            continue;
+        };
+        let target = safe_join(out_dir, &path)?;
+        if entry.is_dir() {
+            fs::create_dir_all(&target).map_err(|e| e.to_string())?;
+            continue;
+        }
+        if let Some(parent) = target.parent() {
+            fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+        }
+        let mut out = fs::File::create(&target).map_err(|e| e.to_string())?;
+        std::io::copy(&mut entry, &mut out).map_err(|e| e.to_string())?;
+        set_executable_if_unix(&target)?;
+    }
+
+    Ok(())
+}
+
+fn extract_targz_bytes(data: &[u8], out_dir: &Path) -> Result<(), String> {
+    let cursor = std::io::Cursor::new(data);
+    let decoder = flate2::read::GzDecoder::new(cursor);
+    let mut archive = tar::Archive::new(decoder);
+    extract_tar_archive(&mut archive, out_dir)
+}
+
+fn extract_tar_bytes(data: &[u8], out_dir: &Path) -> Result<(), String> {
+    let cursor = std::io::Cursor::new(data);
+    let mut archive = tar::Archive::new(cursor);
+    extract_tar_archive(&mut archive, out_dir)
+}
+
+fn extract_tar_archive<R: Read>(
+    archive: &mut tar::Archive<R>,
+    out_dir: &Path,
+) -> Result<(), String> {
+    for entry in archive.entries().map_err(|e| e.to_string())? {
+        let mut entry = entry.map_err(|e| e.to_string())?;
+        let path = entry.path().map_err(|e| e.to_string())?.to_path_buf();
+        let target = safe_join(out_dir, &path)?;
+
+        if let Some(parent) = target.parent() {
+            fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+        }
+        entry.unpack(&target).map_err(|e| e.to_string())?;
+        if target.is_file() {
+            set_executable_if_unix(&target)?;
+        }
+    }
+
+    Ok(())
+}
+
+fn safe_join(base: &Path, rel: &Path) -> Result<PathBuf, String> {
+    let mut clean = PathBuf::new();
+    for comp in rel.components() {
+        match comp {
+            Component::Normal(v) => clean.push(v),
+            Component::CurDir => {}
+            _ => return Err("archive entry has unsafe path".to_string()),
+        }
+    }
+    Ok(base.join(clean))
+}
+
+#[cfg(unix)]
+fn set_executable_if_unix(path: &Path) -> Result<(), String> {
+    use std::os::unix::fs::PermissionsExt;
+
+    let metadata = fs::metadata(path).map_err(|e| e.to_string())?;
+    let mut perms = metadata.permissions();
+    let mode = perms.mode();
+    perms.set_mode(mode | 0o755);
+    fs::set_permissions(path, perms).map_err(|e| e.to_string())
+}
+
+#[cfg(not(unix))]
+fn set_executable_if_unix(_path: &Path) -> Result<(), String> {
+    Ok(())
+}
+
+fn resolve_cargo_bin_dir() -> Result<PathBuf, String> {
+    if let Ok(cargo_home) = env::var("CARGO_HOME")
+        && !cargo_home.trim().is_empty()
+    {
+        return Ok(PathBuf::from(cargo_home).join("bin"));
+    }
+
+    let base = BaseDirs::new().ok_or_else(|| "failed to resolve home directory".to_string())?;
+    Ok(base.home_dir().join(".cargo").join("bin"))
+}
+
+fn resolve_artifacts_root() -> Result<PathBuf, String> {
+    let base = BaseDirs::new().ok_or_else(|| "failed to resolve home directory".to_string())?;
+    Ok(base.home_dir().join(".greentic").join("artifacts"))
+}
+
+fn resolve_tenant_key(
+    cli_key: Option<String>,
+    tenant: &str,
+    locale: &str,
+) -> Result<String, String> {
+    if let Some(key) = cli_key
+        .map(|v| v.trim().to_string())
+        .filter(|v| !v.is_empty())
+    {
+        return Ok(key);
+    }
+
+    let env_name = tenant_env_var_name(tenant);
+    if let Ok(key) = env::var(&env_name)
+        && !key.trim().is_empty()
+    {
+        println!(
+            "{}",
+            tf(
+                locale,
+                "gtc.install.using_env_key",
+                &[("env", env_name.as_str())]
+            )
+        );
+        return Ok(key.trim().to_string());
+    }
+
+    let prompt = tf(locale, "gtc.install.prompt_key", &[("tenant", tenant)]);
+    let key = rpassword::prompt_password(prompt).map_err(|e| e.to_string())?;
+    if key.trim().is_empty() {
+        return Err(t(locale, "gtc.err.key_required").into_owned());
+    }
+    Ok(key)
+}
+
+fn tenant_env_var_name(tenant: &str) -> String {
+    let mut normalized = String::with_capacity(tenant.len());
+    let mut prev_us = false;
+
+    for ch in tenant.chars() {
+        let upper = ch.to_ascii_uppercase();
+        if upper.is_ascii_alphanumeric() {
+            normalized.push(upper);
+            prev_us = false;
+        } else if !prev_us {
+            normalized.push('_');
+            prev_us = true;
+        }
+    }
+
+    let trimmed = normalized.trim_matches('_').to_string();
+    format!("GREENTIC_{}_KEY", trimmed)
+}
+
+fn passthrough(binary: &str, args: &[String], debug: bool, locale: &str) -> i32 {
+    if debug {
+        eprintln!("{} {} {:?}", t(locale, "gtc.debug.exec"), binary, args);
+    }
+
+    match ProcessCommand::new(binary)
+        .args(args)
+        .stdin(Stdio::inherit())
+        .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit())
+        .status()
+    {
+        Ok(status) => status.code().unwrap_or(1),
+        Err(err) => {
+            if err.kind() == std::io::ErrorKind::NotFound {
+                match binary {
+                    DEV_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_dev")),
+                    OP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_op")),
+                    _ => eprintln!("{}", t(locale, "gtc.err.exec_failed")),
+                }
+            } else {
+                eprintln!("{}: {err}", t(locale, "gtc.err.exec_failed"));
+            }
+            1
+        }
+    }
+}
+
+fn run_doctor(locale: &str) -> i32 {
+    let mut failed = false;
+
+    for binary in [DEV_BIN, OP_BIN] {
+        match ProcessCommand::new(binary).arg("--version").output() {
+            Ok(output) => {
+                let status_label = if output.status.success() {
+                    t(locale, "gtc.doctor.ok")
+                } else {
+                    t(locale, "gtc.doctor.warn")
+                };
+                let version = first_non_empty_line(&String::from_utf8_lossy(&output.stdout))
+                    .or_else(|| first_non_empty_line(&String::from_utf8_lossy(&output.stderr)))
+                    .unwrap_or_else(|| t(locale, "gtc.doctor.version_unavailable").into_owned());
+                println!("{binary}: {status_label} ({version})");
+            }
+            Err(err) if err.kind() == std::io::ErrorKind::NotFound => {
+                failed = true;
+                println!("{binary}: {}", t(locale, "gtc.doctor.missing"));
+                match binary {
+                    DEV_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_dev")),
+                    OP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_op")),
+                    _ => {}
+                }
+            }
+            Err(err) => {
+                failed = true;
+                println!("{binary}: {} ({err})", t(locale, "gtc.doctor.missing"));
+            }
+        }
+    }
+
+    if failed { 1 } else { 0 }
+}
+
+fn first_non_empty_line(text: &str) -> Option<String> {
+    text.lines()
+        .map(str::trim)
+        .find(|line| !line.is_empty())
+        .map(ToOwned::to_owned)
+}
+
+fn t(locale: &str, key: &'static str) -> Cow<'static, str> {
+    Cow::Owned(i18n().translate(locale, key))
+}
+
+fn tf(locale: &str, key: &'static str, replacements: &[(&str, &str)]) -> String {
+    let mut value = t(locale, key).into_owned();
+    for (name, replace) in replacements {
+        let token = format!("{{{name}}}");
+        value = value.replace(&token, replace);
+    }
+    value
+}
+
+fn leak_str(value: String) -> &'static str {
+    Box::leak(value.into_boxed_str())
+}
+
+fn i18n() -> &'static I18nCatalog {
+    static CATALOG: OnceLock<I18nCatalog> = OnceLock::new();
+    CATALOG.get_or_init(I18nCatalog::load)
+}
+
+#[derive(Debug)]
+struct I18nCatalog {
+    default_locale: String,
+    supported: HashSet<String>,
+    dictionaries: HashMap<String, HashMap<String, String>>,
+}
+
+impl I18nCatalog {
+    fn load() -> Self {
+        let locales: Value = serde_json::from_str(LOCALES_JSON).expect("valid locales.json");
+        let default_locale = locales
+            .get("default")
+            .and_then(Value::as_str)
+            .unwrap_or("en")
+            .to_string();
+
+        let supported = locales
+            .get("supported")
+            .and_then(Value::as_array)
+            .map(|items| {
+                items
+                    .iter()
+                    .filter_map(Value::as_str)
+                    .map(normalize_locale)
+                    .collect::<HashSet<_>>()
+            })
+            .unwrap_or_else(|| {
+                let mut set = HashSet::new();
+                set.insert(normalize_locale(&default_locale));
+                set
+            });
+
+        let en_map = parse_flat_json_map(EN_JSON).expect("valid en.json");
+
+        let mut dictionaries = HashMap::new();
+        dictionaries.insert(normalize_locale("en"), en_map);
+
+        Self {
+            default_locale,
+            supported,
+            dictionaries,
+        }
+    }
+
+    fn default_locale(&self) -> &str {
+        &self.default_locale
+    }
+
+    fn normalize_or_default(&self, locale: &str) -> String {
+        let normalized = normalize_locale(locale);
+        if self.supported.contains(&normalized) {
+            return normalized;
+        }
+        normalize_locale(&self.default_locale)
+    }
+
+    fn translate(&self, locale: &str, key: &str) -> String {
+        let normalized = self.normalize_or_default(locale);
+
+        if let Some(text) = self
+            .dictionaries
+            .get(&normalized)
+            .and_then(|map| map.get(key))
+            .cloned()
+        {
+            return text;
+        }
+
+        let default = normalize_locale(&self.default_locale);
+        self.dictionaries
+            .get(&default)
+            .and_then(|map| map.get(key))
+            .cloned()
+            .unwrap_or_else(|| key.to_string())
+    }
+}
+
+fn parse_flat_json_map(input: &str) -> Result<HashMap<String, String>, String> {
+    let value: Value = serde_json::from_str(input).map_err(|err| err.to_string())?;
+    let obj = value
+        .as_object()
+        .ok_or_else(|| "JSON root must be an object".to_string())?;
+
+    let mut map = HashMap::with_capacity(obj.len());
+    for (k, v) in obj {
+        let s = v
+            .as_str()
+            .ok_or_else(|| format!("translation value for '{k}' must be a string"))?;
+        map.insert(k.clone(), s.to_string());
+    }
+    Ok(map)
+}
+
+#[derive(Debug, Deserialize)]
+struct InstallManifest {
+    #[allow(dead_code)]
+    schema: String,
+    items: Vec<ManifestItem>,
+}
+
+#[derive(Debug, Deserialize)]
+struct ManifestItem {
+    kind: ArtifactKind,
+    name: String,
+    oci: String,
+}
+
+#[derive(Debug, Deserialize, Clone, Copy)]
+#[serde(rename_all = "lowercase")]
+enum ArtifactKind {
+    Tool,
+    Component,
+    Pack,
+    Bundle,
+}
+
+impl ArtifactKind {
+    fn as_str(&self) -> &'static str {
+        match self {
+            ArtifactKind::Tool => "tool",
+            ArtifactKind::Component => "component",
+            ArtifactKind::Pack => "pack",
+            ArtifactKind::Bundle => "bundle",
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        collect_tail, detect_locale, locale_from_args, resolve_tenant_key, tenant_env_var_name,
+    };
+    use clap::{Arg, ArgMatches, Command};
+
+    #[test]
+    fn locale_arg_is_detected_from_equals_flag() {
+        let args = vec!["gtc".to_string(), "--locale=nl-NL".to_string()];
+        assert_eq!(locale_from_args(&args), Some("nl-NL".to_string()));
+    }
+
+    #[test]
+    fn locale_arg_is_detected_from_split_flag() {
+        let args = vec![
+            "gtc".to_string(),
+            "--locale".to_string(),
+            "en-US".to_string(),
+        ];
+        assert_eq!(locale_from_args(&args), Some("en-US".to_string()));
+    }
+
+    #[test]
+    fn unsupported_locale_falls_back_to_en() {
+        let args = vec!["gtc".to_string(), "--locale".to_string(), "xx".to_string()];
+        assert_eq!(detect_locale(&args, "en"), "en");
+    }
+
+    #[test]
+    fn collect_tail_reads_passthrough_args() {
+        let matches: ArgMatches = Command::new("test")
+            .arg(
+                Arg::new("args")
+                    .num_args(0..)
+                    .trailing_var_arg(true)
+                    .allow_hyphen_values(true),
+            )
+            .try_get_matches_from(["test", "--a", "b"])
+            .expect("matches");
+
+        assert_eq!(
+            collect_tail(&matches),
+            vec!["--a".to_string(), "b".to_string()]
+        );
+    }
+
+    #[test]
+    fn tenant_env_var_name_normalization_matches_contract() {
+        assert_eq!(tenant_env_var_name("acme"), "GREENTIC_ACME_KEY");
+        assert_eq!(tenant_env_var_name("acme-dev"), "GREENTIC_ACME_DEV_KEY");
+        assert_eq!(
+            tenant_env_var_name("Acme.Dev-01"),
+            "GREENTIC_ACME_DEV_01_KEY"
+        );
+    }
+
+    #[test]
+    fn key_resolution_prefers_cli_then_env() {
+        let tenant = "acme";
+        let locale = "en";
+        let env_name = tenant_env_var_name(tenant);
+
+        unsafe {
+            std::env::set_var(&env_name, "env-token");
+        }
+
+        let from_cli = resolve_tenant_key(Some("cli-token".to_string()), tenant, locale).unwrap();
+        assert_eq!(from_cli, "cli-token");
+
+        let from_env = resolve_tenant_key(None, tenant, locale).unwrap();
+        assert_eq!(from_env, "env-token");
+
+        unsafe {
+            std::env::remove_var(&env_name);
+        }
+    }
+}

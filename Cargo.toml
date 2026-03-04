@@ -1,105 +1,40 @@
 [package]
-name = "greentic"
-version = "0.2.2"
-authors = ["maarten <maarten@greentic.com>"]
-description = "The fastest, most secure and extendable digital workers platform"
-license = "MIT"
-repository = "https://github.com/greenticai/greentic"
+name = "gtc"
+version = "1.0.0-alpha1"
 edition = "2024"
-
-
-exclude = [
-  "target/*",
-  ".DS_Store",
-  ".env*",
-  ".cargo/*",
-  "_config.yml",
-  "*.wasm",
-  "**/*.wasm",
-  "**/*.exe",
-  "assets/*",
-  "channels/*",
-  "docs/*",
-  "greentic/*",
-  "tests/**",
-  ".github/*",
-  "crates/channel_mock_inout/*",
-  "crates/channel_mock_middle/*",
-  "crates/channel_telegram/*",
-  "crates/channel_tester/*",
-  "crates/channel_ws/*",
-  "crates/channel_webhook/*",
-  "crates/channel_msgraph/*",
-]
-
-[features]
-default = []
-snapshot-http = ["axum"]
-[workspace]
-members = [
-    "crates/channel_plugin", 
-    "crates/channel_telegram",
-    "crates/channel_mock_inout", 
-    "crates/channel_mock_middle",
-    "crates/channel_tester", 
-    "crates/channel_ws",
-    "crates/xtask", "tests/wasm/mock_tool",
-]
+rust-version = "1.91"
+description = "Greentic - The operation system for digital workers"
+license = "MIT"
+repository = "https://github.com/greentic-ai-org/greentic"
+homepage = "https://greentic.ai"
 
 [dependencies]
-channel_plugin = { version="0.2.1", path = "crates/channel_plugin"}
-schemars = { version = "1.0.4", features = ["chrono04"] }
-serde = { version = "1.0.227", features = ["derive"] }
-serde_json = "1.0.145"
-tokio = { version = "1.47.1", features = ["macros", "rt", "sync", "time", "signal"] }
-typetag = "0.2.20"
-opentelemetry = { version = "0.31.0", features = ["trace"] }
-opentelemetry_sdk = { version = "0.31.0", features = ["rt-tokio", "trace", "metrics"] }
-opentelemetry-otlp = { version = "0.31.0", features = ["grpc-tonic", "trace",] }
-tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.20", features = ["env-filter", "fmt", "std", "json"] }
-tracing-appender = "0.2.3"
-dotenvy = "0.15.7"
-anyhow = "1.0.100"
-rand = "0.9.2"
-wasmtime = "33.0.2"
-wasmtime-wasi = "33.0.2"
-wasmtime-wasi-http = "33.0.2"
-notify = "8.2.0"
-futures-util = "0.3.31"
-jsonschema = "0.33.0"
-once_cell = "1.21.3"
-dashmap = {version="6.1.0", features = ["serde"]}
-tempfile = "3.23.0"
-uuid = { version = "1.18.1", features = ["v4"] }
-handlebars = "6.3.2"
-chrono = { version = "0.4.42", features = ["serde"] }
-futures = "0.3.31"
-clap = { version = "4.5.48", features = ["derive"] }
-lazy_static = "1.5.0"
-petgraph = { version = "0.8.1", features = ["serde"] }
-crossbeam-utils = "0.8.21"
-opentelemetry-appender-tracing = "0.31.0"
-thiserror = "2.0.16"
-ollama-rs = { version="0.3.2", default-features = false }
-url = { version="2.5.7", features = ["serde"] }
-serde_yaml_bw = "2.4.0"
-rhai = { version="1.23.4", features = ["serde"] }
-regex = "1.11.3"
-tokio-util = "0.7.16"
-moka = { version = "0.12.11", features = ["future"] }
-chrono-english = "0.1.8"
-reqwest = {version="0.12.23",default-features = false,features=["rustls-tls","json"]}
-async-trait = "0.1.89"
-data-encoding = "2.9.0"
-sha2 = "0.10.9"
-nkeys = "0.4.5"
-base64 = "0.22.1"
-serde_cbor = "0.11"
-axum = { version = "0.7", optional = true, features = ["json"] }
+async-trait = "0.1"
+clap = { version = "4.5", features = ["std"] }
+directories = "5.0"
+flate2 = "1.1"
+greentic-i18n = "0.4"
+greentic-distributor-client = { version = "0.4", features = ["oci-components"] }
+oci-distribution = { version = "0.11", default-features = false, features = ["rustls-tls"] }
+rpassword = "7.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tar = "0.4"
+tempfile = "3.23"
+tokio = { version = "1.48", features = ["rt"] }
+zip = { version = "2.4", default-features = false, features = ["deflate"] }
 
-[dev-dependencies]
-url = "2.5.4"
-channel_plugin = { version="0.2.0", path = "crates/channel_plugin"}
-assert_cmd = "2.0"
-predicates = "3.1"
+[[bin]]
+name = "gtc"
+path = "src/bin/gtc.rs"
+
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ target }.{ archive-format }"
+bin-dir = "gtc-{ target }/{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
+
+[package.metadata.binstall.overrides.x86_64-pc-windows-msvc]
+pkg-fmt = "zip"
+
+[package.metadata.binstall.overrides.aarch64-pc-windows-msvc]
+pkg-fmt = "zip"
