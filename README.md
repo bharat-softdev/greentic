@@ -130,7 +130,20 @@ Extension packs enable:
 Install Greentic via cargo-binstall (cargo install cargo-binstall):
 
 ``` bash
-cargo binstall gtc
+cargo binstall gtc --version 1.0.0-alpha1
+gtc install
+```
+
+Why the explicit version? Current `gtc` release on crates.io is pre-release
+(`1.0.0-alpha1`), and `cargo-binstall gtc` (without `--version`) may fail with
+`no version matching requirement '*'`.
+
+If you still prefer to install from source:
+
+``` bash
+git clone https://github.com/greenticai/greentic.git
+cd greentic/greentic
+cargo install --path . --locked
 gtc install
 ```
 Run dependency checks:
@@ -195,11 +208,11 @@ cargo --version
 
 ``` bash
 # Make your first bundle
-gtc wizard --answers oci://<TODO>
+gtc op demo new myfirst.gtbundle
 # Setup demo environment
-gtc op setup --bundle ./myfirst.gtbundle
+gtc op demo setup --bundle ./myfirst.gtbundle --tenant default --team default
 # Start operator
-gtc op start --bundle ./myfirst.gtbundle
+gtc op demo start --bundle ./myfirst.gtbundle --tenant default --team default --cloudflared off
 ```
 
 In your browser go to:
@@ -226,8 +239,8 @@ gtc dev cbor <file>.cbor --help
 
 ``` bash
 gtc wizard
-gtc op setup --bundle <something>.gtbundle
-gtc op start --bundle <something>.gtbundle
+gtc op demo setup --bundle <something>.gtbundle --tenant default --team default
+gtc op demo start --bundle <something>.gtbundle --tenant default --team default --cloudflared off
 ```
 
 Operator supports:

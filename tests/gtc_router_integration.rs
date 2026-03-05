@@ -51,6 +51,79 @@ fn wizard_always_routes_to_greentic_dev_wizard() {
 }
 
 #[test]
+fn wizard_with_answers_routes_to_operator_demo_new() {
+    let sandbox = TestSandbox::new("wizard_with_answers_routes_to_operator_demo_new");
+    let log_file = sandbox.path().join("op.log");
+
+    let op_script = format!(
+        "#!/bin/sh\nprintf '%s\\n' \"$*\" >> '{}'\nexit 0\n",
+        log_file.display()
+    );
+
+    sandbox.write_script("greentic-dev", "#!/bin/sh\nexit 0\n");
+    sandbox.write_script("greentic-operator", &op_script);
+
+    let status = sandbox.run_gtc(["wizard", "--answers", "oci://example"], HashMap::new());
+    assert_eq!(status.code(), Some(0));
+
+    let logged = fs::read_to_string(log_file).expect("read op log");
+    assert!(logged.contains("demo new myfirst.gtbundle"));
+}
+
+#[test]
+fn op_setup_routes_to_demo_setup_with_default_tenant_team() {
+    let sandbox = TestSandbox::new("op_setup_routes_to_demo_setup_with_default_tenant_team");
+    let log_file = sandbox.path().join("op.log");
+
+    let op_script = format!(
+        "#!/bin/sh\nprintf '%s\\n' \"$*\" >> '{}'\nexit 0\n",
+        log_file.display()
+    );
+
+    sandbox.write_script("greentic-dev", "#!/bin/sh\nexit 0\n");
+    sandbox.write_script("greentic-operator", &op_script);
+
+    let status = sandbox.run_gtc(
+        ["op", "setup", "--bundle", "./myfirst.gtbundle"],
+        HashMap::new(),
+    );
+    assert_eq!(status.code(), Some(0));
+
+    let logged = fs::read_to_string(log_file).expect("read op log");
+    assert!(logged.contains("demo setup --bundle ./myfirst.gtbundle"));
+    assert!(logged.contains("--tenant default"));
+    assert!(logged.contains("--team default"));
+}
+
+#[test]
+fn op_start_routes_to_demo_start_with_default_tenant_team_and_cloudflared_off() {
+    let sandbox = TestSandbox::new(
+        "op_start_routes_to_demo_start_with_default_tenant_team_and_cloudflared_off",
+    );
+    let log_file = sandbox.path().join("op.log");
+
+    let op_script = format!(
+        "#!/bin/sh\nprintf '%s\\n' \"$*\" >> '{}'\nexit 0\n",
+        log_file.display()
+    );
+
+    sandbox.write_script("greentic-dev", "#!/bin/sh\nexit 0\n");
+    sandbox.write_script("greentic-operator", &op_script);
+
+    let status = sandbox.run_gtc(
+        ["op", "start", "--bundle", "./myfirst.gtbundle"],
+        HashMap::new(),
+    );
+    assert_eq!(status.code(), Some(0));
+
+    let logged = fs::read_to_string(log_file).expect("read op log");
+    assert!(logged.contains("demo start --bundle ./myfirst.gtbundle"));
+    assert!(logged.contains("--tenant default"));
+    assert!(logged.contains("--team default"));
+    assert!(logged.contains("--cloudflared off"));
+}
+
+#[test]
 fn install_public_mode_calls_greentic_dev_install_tools() {
     let sandbox = TestSandbox::new("install_public_mode_calls_greentic_dev_install_tools");
     let log_file = sandbox.path().join("dev.log");

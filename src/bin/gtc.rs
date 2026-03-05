@@ -58,10 +58,14 @@ fn run(raw_args: Vec<String>) -> i32 {
         }
         Some(("op", sub_matches)) => {
             let tail = collect_tail(sub_matches);
-            passthrough(OP_BIN, &tail, debug, &locale)
+            let rewritten = rewrite_legacy_op_args(&tail);
+            passthrough(OP_BIN, &rewritten, debug, &locale)
         }
         Some(("wizard", sub_matches)) => {
             let tail = collect_tail(sub_matches);
+            if let Some(rewritten) = rewrite_legacy_wizard_args(&tail) {
+                return passthrough(OP_BIN, &rewritten, debug, &locale);
+            }
             let mut forwarded = vec!["wizard".to_string()];
             forwarded.extend(tail);
             passthrough(DEV_BIN, &forwarded, debug, &locale)
@@ -140,6 +144,72 @@ fn collect_tail(matches: &ArgMatches) -> Vec<String> {
         .get_many::<String>("args")
         .map(|vals| vals.cloned().collect())
         .unwrap_or_default()
+}
+
+fn rewrite_legacy_op_args(args: &[String]) -> Vec<String> {
+    let Some(first) = args.first() else {
+        return args.to_vec();
+    };
+
+    match first.as_str() {
+        "setup" => {
+            let mut out = vec!["demo".to_string(), "setup".to_string()];
+            out.extend_from_slice(&args[1..]);
+            ensure_flag_value(&mut out, "tenant", "default");
+            ensure_flag_value(&mut out, "team", "default");
+            out
+        }
+        "start" => {
+            let mut out = vec!["demo".to_string(), "start".to_string()];
+            out.extend_from_slice(&args[1..]);
+            ensure_flag_value(&mut out, "tenant", "default");
+            ensure_flag_value(&mut out, "team", "default");
+            ensure_flag_value(&mut out, "cloudflared", "off");
+            out
+        }
+        _ => args.to_vec(),
+    }
+}
+
+fn rewrite_legacy_wizard_args(args: &[String]) -> Option<Vec<String>> {
+    if !has_flag(args, "answers") {
+        return None;
+    }
+    Some(vec![
+        "demo".to_string(),
+        "new".to_string(),
+        wizard_bundle_arg(args).unwrap_or_else(|| "myfirst.gtbundle".to_string()),
+    ])
+}
+
+fn wizard_bundle_arg(args: &[String]) -> Option<String> {
+    for i in 0..args.len() {
+        let arg = &args[i];
+        if let Some(value) = arg.strip_prefix("--bundle=")
+            && !value.is_empty()
+        {
+            return Some(value.to_string());
+        }
+        if arg == "--bundle" {
+            return args.get(i + 1).cloned().filter(|value| !value.is_empty());
+        }
+    }
+    None
+}
+
+fn ensure_flag_value(args: &mut Vec<String>, flag: &str, value: &str) {
+    if has_flag(args, flag) {
+        return;
+    }
+    args.push(format!("--{flag}"));
+    args.push(value.to_string());
+}
+
+fn has_flag(args: &[String], flag: &str) -> bool {
+    let long = format!("--{flag}");
+    let with_eq = format!("{long}=");
+    args.iter()
+        .any(|arg| arg == &long || arg.starts_with(&with_eq))
 }
 
 fn detect_locale(raw_args: &[String], default_locale: &str) -> String {
