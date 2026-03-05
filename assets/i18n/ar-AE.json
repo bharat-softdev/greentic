@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "ثبّت أدوات Greentic، واختياريًا العناصر المعتمدة للمستأجر.",
   "gtc.cmd.op.about": "مرّر إلى greentic-operator.",
   "gtc.cmd.version.about": "اطبع معلومات الإصدار.",
-  "gtc.cmd.wizard.about": "مرّر إلى معالج greentic-dev.",
+  "gtc.cmd.wizard.about": "افتح قائمة معالج Greentic.",
   "gtc.debug.exec": "تنفيذ الموجّه:",
   "gtc.doctor.missing": "مفقود",
   "gtc.doctor.ok": "موافق",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "اكتمل تثبيت عناصر المستأجر مع وجود إخفاقات.",
   "gtc.install.summary_ok": "اكتمل تثبيت عناصر المستأجر بنجاح.",
   "gtc.install.tenant_mode": "تم تفعيل وضع المستأجر لـ '{tenant}'.",
-  "gtc.install.using_env_key": "يتم استخدام مفتاح المستأجر من متغير البيئة {env}."
+  "gtc.install.using_env_key": "يتم استخدام مفتاح المستأجر من متغير البيئة {env}.",
+  "gtc.wizard.err.bundle_exists": "مسار الحزمة موجود بالفعل: {path}",
+  "gtc.wizard.err.bundle_path_required": "مسار الحزمة مطلوب.",
+  "gtc.wizard.option.bundle": "إنشاء / تحديث حزمة إنتاج",
+  "gtc.wizard.option.exit": "خروج",
+  "gtc.wizard.option.pack": "إنشاء / تحديث حزمة (التدفقات + المكوّنات)",
+  "gtc.wizard.prompt.bundle_path": "دليل الحزمة (مثلًا ./mybundle):",
+  "gtc.wizard.prompt.select": "اختر خيارًا:",
+  "gtc.wizard.title": "معالج مطوّر Greentic"
 }

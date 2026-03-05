@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Εγκαθιστά εργαλεία Greentic και προαιρετικά artifacts εξουσιοδοτημένα για tenant.",
   "gtc.cmd.op.about": "Προώθηση στο greentic-operator.",
   "gtc.cmd.version.about": "Εκτυπώνει πληροφορίες έκδοσης.",
-  "gtc.cmd.wizard.about": "Προώθηση στον οδηγό του greentic-dev.",
+  "gtc.cmd.wizard.about": "Άνοιγμα του μενού οδηγού Greentic.",
   "gtc.debug.exec": "Εκτέλεση δρομολογητή:",
   "gtc.doctor.missing": "ΛΕΙΠΕΙ",
   "gtc.doctor.ok": "ΕΝΤΑΞΕΙ",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Η εγκατάσταση artifacts tenant ολοκληρώθηκε με αποτυχίες.",
   "gtc.install.summary_ok": "Η εγκατάσταση artifacts tenant ολοκληρώθηκε επιτυχώς.",
   "gtc.install.tenant_mode": "Η λειτουργία tenant ενεργοποιήθηκε για το '{tenant}'.",
-  "gtc.install.using_env_key": "Χρήση κλειδιού tenant από τη μεταβλητή περιβάλλοντος {env}."
+  "gtc.install.using_env_key": "Χρήση κλειδιού tenant από τη μεταβλητή περιβάλλοντος {env}.",
+  "gtc.wizard.err.bundle_exists": "Η διαδρομή του bundle υπάρχει ήδη: {path}",
+  "gtc.wizard.err.bundle_path_required": "Η διαδρομή του bundle είναι υποχρεωτική.",
+  "gtc.wizard.option.bundle": "Δημιουργία / Ενημέρωση πακέτου παραγωγής",
+  "gtc.wizard.option.exit": "Έξοδος",
+  "gtc.wizard.option.pack": "Δημιουργία / Ενημέρωση πακέτου (ροές + στοιχεία)",
+  "gtc.wizard.prompt.bundle_path": "Κατάλογος bundle (π.χ. ./mybundle):",
+  "gtc.wizard.prompt.select": "Επιλέξτε επιλογή:",
+  "gtc.wizard.title": "Οδηγός προγραμματιστή Greentic"
 }

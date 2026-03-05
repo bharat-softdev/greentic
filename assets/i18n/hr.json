@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Instaliraj Greentic alate i po želji artefakte autorizirane za tenanta.",
   "gtc.cmd.op.about": "Proslijedi na greentic-operator.",
   "gtc.cmd.version.about": "Ispiši informacije o verziji.",
-  "gtc.cmd.wizard.about": "Proslijedi na čarobnjak greentic-dev.",
+  "gtc.cmd.wizard.about": "Otvori izbornik čarobnjaka Greentic.",
   "gtc.debug.exec": "Exec usmjerivača:",
   "gtc.doctor.missing": "NEDOSTAJE",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Instalacija artefakata tenanta dovršena je s greškama.",
   "gtc.install.summary_ok": "Instalacija artefakata tenanta uspješno je dovršena.",
   "gtc.install.tenant_mode": "Način tenanta omogućen je za '{tenant}'.",
-  "gtc.install.using_env_key": "Koristi se ključ tenanta iz varijable okruženja {env}."
+  "gtc.install.using_env_key": "Koristi se ključ tenanta iz varijable okruženja {env}.",
+  "gtc.wizard.err.bundle_exists": "Putanja paketa već postoji: {path}",
+  "gtc.wizard.err.bundle_path_required": "Putanja paketa je obavezna.",
+  "gtc.wizard.option.bundle": "Izgradi / Ažuriraj produkcijski paket",
+  "gtc.wizard.option.exit": "Izlaz",
+  "gtc.wizard.option.pack": "Izgradi / Ažuriraj paket (tijekovi + komponente)",
+  "gtc.wizard.prompt.bundle_path": "Direktorij paketa (npr. ./mybundle):",
+  "gtc.wizard.prompt.select": "Odaberi opciju:",
+  "gtc.wizard.title": "Greentic razvojni čarobnjak"
 }

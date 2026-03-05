@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic-Tools und optional tenant-autorisierte Artefakte installieren.",
   "gtc.cmd.op.about": "An greentic-operator durchreichen.",
   "gtc.cmd.version.about": "Versionsinformationen ausgeben.",
-  "gtc.cmd.wizard.about": "An den greentic-dev-Assistenten durchreichen.",
+  "gtc.cmd.wizard.about": "Öffne das Greentic-Assistentenmenü.",
   "gtc.debug.exec": "Router-Ausführung:",
   "gtc.doctor.missing": "FEHLT",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant-Artefaktinstallation mit Fehlern abgeschlossen.",
   "gtc.install.summary_ok": "Tenant-Artefaktinstallation erfolgreich abgeschlossen.",
   "gtc.install.tenant_mode": "Tenant-Modus für '{tenant}' aktiviert.",
-  "gtc.install.using_env_key": "Tenant-Schlüssel aus Umgebungsvariable {env} wird verwendet."
+  "gtc.install.using_env_key": "Tenant-Schlüssel aus Umgebungsvariable {env} wird verwendet.",
+  "gtc.wizard.err.bundle_exists": "Bundle-Pfad existiert bereits: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle-Pfad ist erforderlich.",
+  "gtc.wizard.option.bundle": "Ein Produktions-Bundle erstellen / aktualisieren",
+  "gtc.wizard.option.exit": "Beenden",
+  "gtc.wizard.option.pack": "Ein Pack erstellen / aktualisieren (Flows + Komponenten)",
+  "gtc.wizard.prompt.bundle_path": "Bundle-Verzeichnis (z. B. ./mybundle):",
+  "gtc.wizard.prompt.select": "Option auswählen:",
+  "gtc.wizard.title": "Greentic Entwickler-Assistent"
 }

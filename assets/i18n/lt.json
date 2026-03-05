@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Įdiegti Greentic įrankius ir pasirinktinai tenanto autorizuotus artefaktus.",
   "gtc.cmd.op.about": "Perduoti į greentic-operator.",
   "gtc.cmd.version.about": "Išvesti versijos informaciją.",
-  "gtc.cmd.wizard.about": "Perduoti į greentic-dev vedlį.",
+  "gtc.cmd.wizard.about": "Atidarykite „Greentic“ vedlio meniu.",
   "gtc.debug.exec": "Maršrutizatoriaus vykdymas:",
   "gtc.doctor.missing": "TRŪKSTA",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenanto artefaktų diegimas baigtas su klaidomis.",
   "gtc.install.summary_ok": "Tenanto artefaktų diegimas sėkmingai baigtas.",
   "gtc.install.tenant_mode": "Tenanto režimas įjungtas '{tenant}'.",
-  "gtc.install.using_env_key": "Naudojamas tenanto raktas iš aplinkos kintamojo {env}."
+  "gtc.install.using_env_key": "Naudojamas tenanto raktas iš aplinkos kintamojo {env}.",
+  "gtc.wizard.err.bundle_exists": "Paketo kelias jau egzistuoja: {path}",
+  "gtc.wizard.err.bundle_path_required": "Paketo kelias yra privalomas.",
+  "gtc.wizard.option.bundle": "Sukurti / Atnaujinti produkcinį rinkinį",
+  "gtc.wizard.option.exit": "Išeiti",
+  "gtc.wizard.option.pack": "Sukurti / Atnaujinti paketą (srautai + komponentai)",
+  "gtc.wizard.prompt.bundle_path": "Paketo katalogas (pvz., ./mybundle):",
+  "gtc.wizard.prompt.select": "Pasirinkite parinktį:",
+  "gtc.wizard.title": "Greentic kūrėjo vedlys"
 }

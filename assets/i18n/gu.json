@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic ટૂલ્સ અને વૈકલ્પિક રીતે tenant-authorized artifacts ઇન્સ્ટોલ કરો.",
   "gtc.cmd.op.about": "greentic-operator તરફ પાસ થ્રુ કરો.",
   "gtc.cmd.version.about": "વર્ઝન માહિતી છાપો.",
-  "gtc.cmd.wizard.about": "greentic-dev wizard તરફ પાસ થ્રુ કરો.",
+  "gtc.cmd.wizard.about": "Greentic વિઝાર્ડ મેનુ ખોલો.",
   "gtc.debug.exec": "રાઉટર exec:",
   "gtc.doctor.missing": "ગાયબ",
   "gtc.doctor.ok": "બરાબર",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant artifact ઇન્સ્ટોલેશન નિષ્ફળતાઓ સાથે પૂર્ણ થયું.",
   "gtc.install.summary_ok": "Tenant artifact ઇન્સ્ટોલેશન સફળતાપૂર્વક પૂર્ણ થયું.",
   "gtc.install.tenant_mode": "'{tenant}' માટે Tenant mode સક્રિય થયો.",
-  "gtc.install.using_env_key": "Environment variable {env} માંથી tenant key વાપરી રહ્યા છીએ."
+  "gtc.install.using_env_key": "Environment variable {env} માંથી tenant key વાપરી રહ્યા છીએ.",
+  "gtc.wizard.err.bundle_exists": "બંડલ પાથ પહેલેથી જ અસ્તિત્વમાં છે: {path}",
+  "gtc.wizard.err.bundle_path_required": "બંડલ પાથ જરૂરી છે.",
+  "gtc.wizard.option.bundle": "પ્રોડક્શન બંડલ બનાવો / અપડેટ કરો",
+  "gtc.wizard.option.exit": "બહાર નીકળો",
+  "gtc.wizard.option.pack": "પેક બનાવો / અપડેટ કરો (ફ્લોઝ + કોમ્પોનેન્ટ્સ)",
+  "gtc.wizard.prompt.bundle_path": "બંડલ ડિરેક્ટરી (દા.ત. ./mybundle):",
+  "gtc.wizard.prompt.select": "વિકલ્પ પસંદ કરો:",
+  "gtc.wizard.title": "Greentic ડેવલપર વિઝાર્ડ"
 }

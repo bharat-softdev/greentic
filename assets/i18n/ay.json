@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic herramientas instalar, ukat munaspa ukhaxa tenant-autorizada artefactos ukanaka.",
   "gtc.cmd.op.about": "greentic-operator ukar pasayaña.",
   "gtc.cmd.version.about": "Versión yatiyawinaka apsuña.",
-  "gtc.cmd.wizard.about": "greentic-dev wizard ukar pasayaña.",
+  "gtc.cmd.wizard.about": "Greentic asistente menú jist'araña.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "JANIW UTJKITI",
   "gtc.doctor.ok": "WALIKI",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant artefacto instalación tukuyatawa ukampis pantjawinakampi.",
   "gtc.install.summary_ok": "Tenant artefacto instalación sumakiwa tukuyata.",
   "gtc.install.tenant_mode": "Tenant modo ukax '{tenant}' ukatak ch'amañchatawa.",
-  "gtc.install.using_env_key": "Tenant llave apnaqaski variable de entorno {env} ukata."
+  "gtc.install.using_env_key": "Tenant llave apnaqaski variable de entorno {env} ukata.",
+  "gtc.wizard.err.bundle_exists": "Bundle thakhix nayraqatpach utji: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle thakhix wakisiwa.",
+  "gtc.wizard.option.bundle": "Producción Bundle luraña / machaqt'ayaña",
+  "gtc.wizard.option.exit": "Mistuña",
+  "gtc.wizard.option.pack": "Pack luraña / machaqt'ayaña (flows + components)",
+  "gtc.wizard.prompt.bundle_path": "Bundle directorio (uñacht'äwi, ./mybundle):",
+  "gtc.wizard.prompt.select": "Ajlliña opción:",
+  "gtc.wizard.title": "Greentic Desarrollador Asistente"
 }

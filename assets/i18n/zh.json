@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "安装 Greentic 工具，并可选择安装租户授权的制品。",
   "gtc.cmd.op.about": "透传到 greentic-operator。",
   "gtc.cmd.version.about": "打印版本信息。",
-  "gtc.cmd.wizard.about": "透传到 greentic-dev wizard。",
+  "gtc.cmd.wizard.about": "打开 Greentic 向导菜单。",
   "gtc.debug.exec": "路由器执行：",
   "gtc.doctor.missing": "缺失",
   "gtc.doctor.ok": "正常",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "租户制品安装已完成，但存在失败项。",
   "gtc.install.summary_ok": "租户制品安装已成功完成。",
   "gtc.install.tenant_mode": "已为 '{tenant}' 启用租户模式。",
-  "gtc.install.using_env_key": "正在使用环境变量 {env} 中的租户密钥。"
+  "gtc.install.using_env_key": "正在使用环境变量 {env} 中的租户密钥。",
+  "gtc.wizard.err.bundle_exists": "捆绑包路径已存在：{path}",
+  "gtc.wizard.err.bundle_path_required": "捆绑包路径为必填项。",
+  "gtc.wizard.option.bundle": "构建 / 更新生产包",
+  "gtc.wizard.option.exit": "退出",
+  "gtc.wizard.option.pack": "构建 / 更新包（流程 + 组件）",
+  "gtc.wizard.prompt.bundle_path": "捆绑包目录（例如 ./mybundle）：",
+  "gtc.wizard.prompt.select": "选择选项：",
+  "gtc.wizard.title": "Greentic 开发者向导"
 }

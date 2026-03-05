@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Kinstalla Greentic tools ihuan, ika moneki, artifacts autorizados de tenant.",
   "gtc.cmd.op.about": "Panoua nikan para greentic-operator.",
   "gtc.cmd.version.about": "Kichiua print de informacion de version.",
-  "gtc.cmd.wizard.about": "Panoua nikan para wizard de greentic-dev.",
+  "gtc.cmd.wizard.about": "Xikātlapo in menú tlen Greentic wizard.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "POLOA",
   "gtc.doctor.ok": "KUALLI",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Instalacion de artifacts de tenant otlanki ika fallas.",
   "gtc.install.summary_ok": "Instalacion de artifacts de tenant otlanki kualli.",
   "gtc.install.tenant_mode": "Modo tenant omoyektlalij para '{tenant}'.",
-  "gtc.install.using_env_key": "Mokui key de tenant tlen uala de variable de entorno {env}."
+  "gtc.install.using_env_key": "Mokui key de tenant tlen uala de variable de entorno {env}.",
+  "gtc.wizard.err.bundle_exists": "Ojtli tlen bundle ya onka: {path}",
+  "gtc.wizard.err.bundle_path_required": "Moneki ojtli tlen bundle.",
+  "gtc.wizard.option.bundle": "Xikchīhua / Xikyankwikā se Producción Bundle",
+  "gtc.wizard.option.exit": "Xīsa",
+  "gtc.wizard.option.pack": "Xikchīhua / Xikyankwikā se Pack (flows + components)",
+  "gtc.wizard.prompt.bundle_path": "Directorio tlen bundle (e.g. ./mybundle):",
+  "gtc.wizard.prompt.select": "Xiktlapejpeni opción:",
+  "gtc.wizard.title": "Greentic Developer Wizard"
 }

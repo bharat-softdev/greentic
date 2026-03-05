@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "ابزارهای Greentic و در صورت تمایل آرتیفکت‌های مجازِ tenant را نصب کن.",
   "gtc.cmd.op.about": "به greentic-operator پاس داده می‌شود.",
   "gtc.cmd.version.about": "اطلاعات نسخه را چاپ کن.",
-  "gtc.cmd.wizard.about": "به ویزارد greentic-dev پاس داده می‌شود.",
+  "gtc.cmd.wizard.about": "منوی جادوگر Greentic را باز کنید.",
   "gtc.debug.exec": "اجرای مسیریاب:",
   "gtc.doctor.missing": "موجود نیست",
   "gtc.doctor.ok": "تأیید",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "نصب آرتیفکت‌های tenant با خطاهایی تکمیل شد.",
   "gtc.install.summary_ok": "نصب آرتیفکت‌های tenant با موفقیت تکمیل شد.",
   "gtc.install.tenant_mode": "حالت tenant برای '{tenant}' فعال شد.",
-  "gtc.install.using_env_key": "در حال استفاده از کلید tenant از متغیر محیطی {env}."
+  "gtc.install.using_env_key": "در حال استفاده از کلید tenant از متغیر محیطی {env}.",
+  "gtc.wizard.err.bundle_exists": "مسیر بسته از قبل وجود دارد: {path}",
+  "gtc.wizard.err.bundle_path_required": "مسیر بسته الزامی است.",
+  "gtc.wizard.option.bundle": "ساخت / به‌روزرسانی یک بسته تولید",
+  "gtc.wizard.option.exit": "خروج",
+  "gtc.wizard.option.pack": "ساخت / به‌روزرسانی یک بسته (جریان‌ها + مؤلفه‌ها)",
+  "gtc.wizard.prompt.bundle_path": "پوشهٔ بسته (مثلاً ./mybundle):",
+  "gtc.wizard.prompt.select": "گزینه را انتخاب کنید:",
+  "gtc.wizard.title": "جادوگر توسعه‌دهنده Greentic"
 }

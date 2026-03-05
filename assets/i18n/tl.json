@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "I-install ang mga tool ng Greentic at opsyonal na mga artifact na awtorisado ng tenant.",
   "gtc.cmd.op.about": "Ipasa sa greentic-operator.",
   "gtc.cmd.version.about": "I-print ang impormasyon ng bersyon.",
-  "gtc.cmd.wizard.about": "Ipasa sa greentic-dev wizard.",
+  "gtc.cmd.wizard.about": "Buksan ang menu ng Greentic wizard.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "WALA",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Natapos ang pag-install ng tenant artifact na may mga pagkabigo.",
   "gtc.install.summary_ok": "Matagumpay na natapos ang pag-install ng tenant artifact.",
   "gtc.install.tenant_mode": "Pinagana ang tenant mode para sa '{tenant}'.",
-  "gtc.install.using_env_key": "Ginagamit ang tenant key mula sa environment variable na {env}."
+  "gtc.install.using_env_key": "Ginagamit ang tenant key mula sa environment variable na {env}.",
+  "gtc.wizard.err.bundle_exists": "Umiiral na ang landas ng bundle: {path}",
+  "gtc.wizard.err.bundle_path_required": "Kinakailangan ang landas ng bundle.",
+  "gtc.wizard.option.bundle": "Bumuo / I-update ang Production Bundle",
+  "gtc.wizard.option.exit": "Lumabas",
+  "gtc.wizard.option.pack": "Bumuo / I-update ang isang Pack (flows + components)",
+  "gtc.wizard.prompt.bundle_path": "Direktoryo ng bundle (hal. ./mybundle):",
+  "gtc.wizard.prompt.select": "Pumili ng opsyon:",
+  "gtc.wizard.title": "Greentic Developer Wizard"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Instal alat Greentic dan opsional artefak yang diotorisasi tenant.",
   "gtc.cmd.op.about": "Teruskan ke greentic-operator.",
   "gtc.cmd.version.about": "Cetak informasi versi.",
-  "gtc.cmd.wizard.about": "Teruskan ke wizard greentic-dev.",
+  "gtc.cmd.wizard.about": "Buka menu wizard Greentic.",
   "gtc.debug.exec": "Eksekusi router:",
   "gtc.doctor.missing": "TIDAK ADA",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Instalasi artefak tenant selesai dengan kegagalan.",
   "gtc.install.summary_ok": "Instalasi artefak tenant selesai dengan sukses.",
   "gtc.install.tenant_mode": "Mode tenant diaktifkan untuk '{tenant}'.",
-  "gtc.install.using_env_key": "Menggunakan kunci tenant dari variabel lingkungan {env}."
+  "gtc.install.using_env_key": "Menggunakan kunci tenant dari variabel lingkungan {env}.",
+  "gtc.wizard.err.bundle_exists": "Path bundle sudah ada: {path}",
+  "gtc.wizard.err.bundle_path_required": "Path bundle wajib diisi.",
+  "gtc.wizard.option.bundle": "Bangun / Perbarui Bundle Produksi",
+  "gtc.wizard.option.exit": "Keluar",
+  "gtc.wizard.option.pack": "Bangun / Perbarui Pack (alur + komponen)",
+  "gtc.wizard.prompt.bundle_path": "Direktori bundle (mis. ./mybundle):",
+  "gtc.wizard.prompt.select": "Pilih opsi:",
+  "gtc.wizard.title": "Wizard Pengembang Greentic"
 }

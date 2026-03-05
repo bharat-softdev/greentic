@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Installera Greentic-verktyg och valfritt tenant-auktoriserade artefakter.",
   "gtc.cmd.op.about": "Skicka vidare till greentic-operator.",
   "gtc.cmd.version.about": "Skriv ut versionsinformation.",
-  "gtc.cmd.wizard.about": "Skicka vidare till greentic-dev wizard.",
+  "gtc.cmd.wizard.about": "Öppna Greentic-guidemenyn.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "SAKNAS",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Installation av tenant-artefakter slutfördes med fel.",
   "gtc.install.summary_ok": "Installation av tenant-artefakter slutfördes.",
   "gtc.install.tenant_mode": "Tenant-läge aktiverat för '{tenant}'.",
-  "gtc.install.using_env_key": "Använder tenantnyckel från miljövariabeln {env}."
+  "gtc.install.using_env_key": "Använder tenantnyckel från miljövariabeln {env}.",
+  "gtc.wizard.err.bundle_exists": "Bundle-sökvägen finns redan: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle-sökväg krävs.",
+  "gtc.wizard.option.bundle": "Bygg / Uppdatera en produktionsbundle",
+  "gtc.wizard.option.exit": "Avsluta",
+  "gtc.wizard.option.pack": "Bygg / Uppdatera ett paket (flöden + komponenter)",
+  "gtc.wizard.prompt.bundle_path": "Bundle-katalog (t.ex. ./mybundle):",
+  "gtc.wizard.prompt.select": "Välj alternativ:",
+  "gtc.wizard.title": "Greentic utvecklarguide"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "ដំឡើងឧបករណ៍ Greentic និងជម្រើស artifact ដែល tenant អនុញ្ញាត។",
   "gtc.cmd.op.about": "បញ្ជូនបន្តទៅ greentic-operator។",
   "gtc.cmd.version.about": "បោះពុម្ពព័ត៌មានកំណែ។",
-  "gtc.cmd.wizard.about": "បញ្ជូនបន្តទៅ wizard របស់ greentic-dev។",
+  "gtc.cmd.wizard.about": "បើកម៉ឺនុយអ្នកជំនួយ Greentic។",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "ខ្វះ",
   "gtc.doctor.ok": "យល់ព្រម",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "ការដំឡើង artifact របស់ tenant បានបញ្ចប់ដោយមានបរាជ័យ។",
   "gtc.install.summary_ok": "ការដំឡើង artifact របស់ tenant បានបញ្ចប់ដោយជោគជ័យ។",
   "gtc.install.tenant_mode": "បានបើក tenant mode សម្រាប់ '{tenant}'។",
-  "gtc.install.using_env_key": "កំពុងប្រើសោ tenant ពីអថេរបរិស្ថាន {env}។"
+  "gtc.install.using_env_key": "កំពុងប្រើសោ tenant ពីអថេរបរិស្ថាន {env}។",
+  "gtc.wizard.err.bundle_exists": "ផ្លូវបណ្ណុំមានរួចហើយ: {path}",
+  "gtc.wizard.err.bundle_path_required": "ត្រូវការផ្លូវបណ្ណុំ។",
+  "gtc.wizard.option.bundle": "ស្ថាបនា / ធ្វើបច្ចុប្បន្នភាពកញ្ចប់ផលិតកម្ម",
+  "gtc.wizard.option.exit": "ចាកចេញ",
+  "gtc.wizard.option.pack": "ស្ថាបនា / ធ្វើបច្ចុប្បន្នភាពកញ្ចប់ (លំហូរ + សមាសភាគ)",
+  "gtc.wizard.prompt.bundle_path": "ថតបណ្ណុំ (ឧ. ./mybundle):",
+  "gtc.wizard.prompt.select": "ជ្រើសរើសជម្រើស៖",
+  "gtc.wizard.title": "អ្នកជំនួយអ្នកអភិវឌ្ឍន៍ Greentic"
 }

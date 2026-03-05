@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic 도구를 설치하고 선택적으로 테넌트 인증 아티팩트를 설치합니다.",
   "gtc.cmd.op.about": "greentic-operator로 전달합니다.",
   "gtc.cmd.version.about": "버전 정보를 출력합니다.",
-  "gtc.cmd.wizard.about": "greentic-dev wizard로 전달합니다.",
+  "gtc.cmd.wizard.about": "Greentic 마법사 메뉴를 엽니다.",
   "gtc.debug.exec": "라우터 exec:",
   "gtc.doctor.missing": "누락",
   "gtc.doctor.ok": "정상",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "테넌트 아티팩트 설치가 실패를 포함한 채 완료되었습니다.",
   "gtc.install.summary_ok": "테넌트 아티팩트 설치가 성공적으로 완료되었습니다.",
   "gtc.install.tenant_mode": "'{tenant}'에 대해 테넌트 모드가 활성화되었습니다.",
-  "gtc.install.using_env_key": "환경 변수 {env}의 테넌트 키를 사용합니다."
+  "gtc.install.using_env_key": "환경 변수 {env}의 테넌트 키를 사용합니다.",
+  "gtc.wizard.err.bundle_exists": "번들 경로가 이미 존재합니다: {path}",
+  "gtc.wizard.err.bundle_path_required": "번들 경로는 필수입니다.",
+  "gtc.wizard.option.bundle": "프로덕션 번들 빌드 / 업데이트",
+  "gtc.wizard.option.exit": "종료",
+  "gtc.wizard.option.pack": "팩 빌드 / 업데이트 (플로우 + 컴포넌트)",
+  "gtc.wizard.prompt.bundle_path": "번들 디렉터리(예: ./mybundle):",
+  "gtc.wizard.prompt.select": "옵션 선택:",
+  "gtc.wizard.title": "Greentic 개발자 마법사"
 }

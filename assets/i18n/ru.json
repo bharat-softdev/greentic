@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Установить инструменты Greentic и при необходимости артефакты, авторизованные арендатором.",
   "gtc.cmd.op.about": "Передать в greentic-operator.",
   "gtc.cmd.version.about": "Вывести информацию о версии.",
-  "gtc.cmd.wizard.about": "Передать в мастер greentic-dev.",
+  "gtc.cmd.wizard.about": "Открыть меню мастера Greentic.",
   "gtc.debug.exec": "Выполнение маршрутизатора:",
   "gtc.doctor.missing": "ОТСУТСТВУЕТ",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Установка артефактов арендатора завершена с ошибками.",
   "gtc.install.summary_ok": "Установка артефактов арендатора успешно завершена.",
   "gtc.install.tenant_mode": "Режим арендатора включён для '{tenant}'.",
-  "gtc.install.using_env_key": "Используется ключ арендатора из переменной окружения {env}."
+  "gtc.install.using_env_key": "Используется ключ арендатора из переменной окружения {env}.",
+  "gtc.wizard.err.bundle_exists": "Путь к пакету уже существует: {path}",
+  "gtc.wizard.err.bundle_path_required": "Требуется путь к пакету.",
+  "gtc.wizard.option.bundle": "Собрать / Обновить продакшн-бандл",
+  "gtc.wizard.option.exit": "Выход",
+  "gtc.wizard.option.pack": "Собрать / Обновить пакет (потоки + компоненты)",
+  "gtc.wizard.prompt.bundle_path": "Каталог пакета (например, ./mybundle):",
+  "gtc.wizard.prompt.select": "Выберите опцию:",
+  "gtc.wizard.title": "Мастер разработчика Greentic"
 }

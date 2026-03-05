@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Instala herramientas de Greentic y, opcionalmente, artefactos autorizados por tenant.",
   "gtc.cmd.op.about": "Redirige a greentic-operator.",
   "gtc.cmd.version.about": "Imprime información de versión.",
-  "gtc.cmd.wizard.about": "Redirige al asistente de greentic-dev.",
+  "gtc.cmd.wizard.about": "Abrir el menú del asistente de Greentic.",
   "gtc.debug.exec": "Ejecución del router:",
   "gtc.doctor.missing": "FALTA",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "La instalación de artefactos de tenant se completó con fallos.",
   "gtc.install.summary_ok": "La instalación de artefactos de tenant se completó correctamente.",
   "gtc.install.tenant_mode": "Modo tenant habilitado para '{tenant}'.",
-  "gtc.install.using_env_key": "Usando la clave de tenant de la variable de entorno {env}."
+  "gtc.install.using_env_key": "Usando la clave de tenant de la variable de entorno {env}.",
+  "gtc.wizard.err.bundle_exists": "La ruta del paquete ya existe: {path}",
+  "gtc.wizard.err.bundle_path_required": "La ruta del paquete es obligatoria.",
+  "gtc.wizard.option.bundle": "Compilar / Actualizar un Paquete de Producción",
+  "gtc.wizard.option.exit": "Salir",
+  "gtc.wizard.option.pack": "Compilar / Actualizar un Paquete (flujos + componentes)",
+  "gtc.wizard.prompt.bundle_path": "Directorio del paquete (p. ej. ./mybundle):",
+  "gtc.wizard.prompt.select": "Seleccionar opción:",
+  "gtc.wizard.title": "Asistente para Desarrolladores de Greentic"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "ติดตั้งเครื่องมือ Greentic และอาร์ติแฟกต์ที่ได้รับอนุญาตตาม tenant (ถ้ามี)",
   "gtc.cmd.op.about": "ส่งต่อไปยัง greentic-operator",
   "gtc.cmd.version.about": "พิมพ์ข้อมูลเวอร์ชัน",
-  "gtc.cmd.wizard.about": "ส่งต่อไปยังวิซาร์ดของ greentic-dev",
+  "gtc.cmd.wizard.about": "เปิดเมนูวิซาร์ดของ Greentic",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "ไม่พบ",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "การติดตั้งอาร์ติแฟกต์ tenant เสร็จสิ้นพร้อมข้อผิดพลาด",
   "gtc.install.summary_ok": "การติดตั้งอาร์ติแฟกต์ tenant เสร็จสมบูรณ์",
   "gtc.install.tenant_mode": "เปิดโหมด tenant สำหรับ '{tenant}'",
-  "gtc.install.using_env_key": "กำลังใช้คีย์ tenant จากตัวแปรสภาพแวดล้อม {env}"
+  "gtc.install.using_env_key": "กำลังใช้คีย์ tenant จากตัวแปรสภาพแวดล้อม {env}",
+  "gtc.wizard.err.bundle_exists": "มีเส้นทางบันเดิลนี้อยู่แล้ว: {path}",
+  "gtc.wizard.err.bundle_path_required": "ต้องระบุเส้นทางบันเดิล",
+  "gtc.wizard.option.bundle": "สร้าง / อัปเดตบันเดิลสำหรับใช้งานจริง",
+  "gtc.wizard.option.exit": "ออก",
+  "gtc.wizard.option.pack": "สร้าง / อัปเดตแพ็ก (โฟลว์ + คอมโพเนนต์)",
+  "gtc.wizard.prompt.bundle_path": "ไดเรกทอรีบันเดิล (เช่น ./mybundle):",
+  "gtc.wizard.prompt.select": "เลือกตัวเลือก:",
+  "gtc.wizard.title": "วิซาร์ดสำหรับนักพัฒนา Greentic"
 }

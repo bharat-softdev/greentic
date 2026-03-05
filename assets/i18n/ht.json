@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Enstale zouti Greentic epi, si ou vle, atifak tenant otorize yo.",
   "gtc.cmd.op.about": "Pase dirèkteman bay greentic-operator.",
   "gtc.cmd.version.about": "Enprime enfòmasyon vèsyon an.",
-  "gtc.cmd.wizard.about": "Pase dirèkteman bay asistan greentic-dev la.",
+  "gtc.cmd.wizard.about": "Louvri meni asistan Greentic la.",
   "gtc.debug.exec": "Egzekisyon routè:",
   "gtc.doctor.missing": "Manke",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Enstalasyon atifak tenant yo fini ak echèk.",
   "gtc.install.summary_ok": "Enstalasyon atifak tenant yo fini avèk siksè.",
   "gtc.install.tenant_mode": "Mòd tenant aktive pou '{tenant}'.",
-  "gtc.install.using_env_key": "Ap itilize kle tenant ki soti nan varyab anviwònman {env}."
+  "gtc.install.using_env_key": "Ap itilize kle tenant ki soti nan varyab anviwònman {env}.",
+  "gtc.wizard.err.bundle_exists": "Chemen bundle la deja egziste: {path}",
+  "gtc.wizard.err.bundle_path_required": "Chemen bundle la obligatwa.",
+  "gtc.wizard.option.bundle": "Konstwi / Mete ajou yon Bundle Pwodiksyon",
+  "gtc.wizard.option.exit": "Sòti",
+  "gtc.wizard.option.pack": "Konstwi / Mete ajou yon Pak (flows + konpozan)",
+  "gtc.wizard.prompt.bundle_path": "Anyè bundle la (pa egzanp ./mybundle):",
+  "gtc.wizard.prompt.select": "Chwazi opsyon:",
+  "gtc.wizard.title": "Asistan Devlopè Greentic"
 }

@@ -5,7 +5,7 @@ use std::borrow::Cow;
 use std::collections::{HashMap, HashSet};
 use std::env;
 use std::fs;
-use std::io::Read;
+use std::io::{self, Read, Write};
 use std::path::{Component, Path, PathBuf};
 use std::process::{Command as ProcessCommand, Stdio};
 use std::sync::OnceLock;
@@ -20,6 +20,7 @@ use crate::dist::build_adapter;
 
 const DEV_BIN: &str = "greentic-dev";
 const OP_BIN: &str = "greentic-operator";
+const PACK_BIN: &str = "greentic-pack";
 
 const LOCALES_JSON: &str = include_str!("../../assets/i18n/locales.json");
 include!(concat!(env!("OUT_DIR"), "/embedded_i18n.rs"));
@@ -66,7 +67,17 @@ fn run(raw_args: Vec<String>) -> i32 {
             if let Some(rewritten) = rewrite_legacy_wizard_args(&tail) {
                 return passthrough(OP_BIN, &rewritten, debug, &locale);
             }
+            if tail.is_empty() {
+                return run_wizard_menu(debug, &locale);
+            }
             let mut forwarded = vec!["wizard".to_string()];
+            ensure_flag_value(&mut forwarded, "yes", "");
+            if !has_flag(&tail, "frontend") {
+                ensure_flag_value(&mut forwarded, "frontend", "text");
+            }
+            if !has_flag(&tail, "locale") {
+                ensure_flag_value(&mut forwarded, "locale", &locale);
+            }
             forwarded.extend(tail);
             passthrough(DEV_BIN, &forwarded, debug, &locale)
         }
@@ -202,7 +213,9 @@ fn ensure_flag_value(args: &mut Vec<String>, flag: &str, value: &str) {
         return;
     }
     args.push(format!("--{flag}"));
-    args.push(value.to_string());
+    if !value.is_empty() {
+        args.push(value.to_string());
+    }
 }
 
 fn has_flag(args: &[String], flag: &str) -> bool {
@@ -373,6 +386,120 @@ fn run_install(sub_matches: &ArgMatches, debug: bool, locale: &str) -> i32 {
         println!("{}", t(locale, "gtc.install.summary_ok"));
         0
     }
+}
+
+fn run_wizard_menu(debug: bool, locale: &str) -> i32 {
+    println!(
+        "{}",
+        t_or(locale, "gtc.wizard.title", "Greentic Developer Wizard")
+    );
+    println!();
+    println!(
+        "1) {}",
+        t_or(
+            locale,
+            "gtc.wizard.option.pack",
+            "Build / Update a Pack (flows + components)"
+        )
+    );
+    println!(
+        "2) {}",
+        t_or(
+            locale,
+            "gtc.wizard.option.bundle",
+            "Build / Update a Production Bundle"
+        )
+    );
+    println!("0) {}", t_or(locale, "gtc.wizard.option.exit", "Exit"));
+    println!();
+
+    loop {
+        print!(
+            "{} ",
+            t_or(locale, "gtc.wizard.prompt.select", "Select option:")
+        );
+        if io::stdout().flush().is_err() {
+            return 1;
+        }
+
+        let mut input = String::new();
+        if io::stdin().read_line(&mut input).is_err() {
+            return 1;
+        }
+
+        match input.trim() {
+            "1" => {
+                let args = vec![
+                    "wizard".to_string(),
+                    "--locale".to_string(),
+                    locale.to_string(),
+                ];
+                return passthrough(PACK_BIN, &args, debug, locale);
+            }
+            "2" => {
+                let bundle = loop {
+                    let Some(path) = prompt_bundle_path(locale) else {
+                        continue;
+                    };
+                    if Path::new(&path).exists() {
+                        eprintln!(
+                            "{}",
+                            tf(
+                                locale,
+                                "gtc.wizard.err.bundle_exists",
+                                &[("path", path.as_str())]
+                            )
+                        );
+                        continue;
+                    }
+                    break path;
+                };
+                let args = vec![
+                    "demo".to_string(),
+                    "new".to_string(),
+                    bundle,
+                    "--locale".to_string(),
+                    locale.to_string(),
+                ];
+                return passthrough(OP_BIN, &args, debug, locale);
+            }
+            "0" => return 0,
+            _ => {}
+        }
+    }
+}
+
+fn prompt_bundle_path(locale: &str) -> Option<String> {
+    print!(
+        "{} ",
+        t_or(
+            locale,
+            "gtc.wizard.prompt.bundle_path",
+            "Bundle directory (e.g. ./mybundle):"
+        )
+    );
+    if io::stdout().flush().is_err() {
+        return None;
+    }
+
+    let mut input = String::new();
+    if io::stdin().read_line(&mut input).is_err() {
+        return None;
+    }
+
+    let value = input.trim().to_string();
+    if value.is_empty() {
+        eprintln!(
+            "{}",
+            t_or(
+                locale,
+                "gtc.wizard.err.bundle_path_required",
+                "Bundle path is required."
+            )
+        );
+        return None;
+    }
+    Some(value)
 }
 
 fn install_manifest_item(
@@ -700,6 +827,7 @@ fn passthrough(binary: &str, args: &[String], debug: bool, locale: &str) -> i32 
 
     match ProcessCommand::new(binary)
         .args(args)
+        .env("GREENTIC_LOCALE", locale)
         .stdin(Stdio::inherit())
         .stdout(Stdio::inherit())
         .stderr(Stdio::inherit())
@@ -765,6 +893,15 @@ fn first_non_empty_line(text: &str) -> Option<String> {
 
 fn t(locale: &str, key: &'static str) -> Cow<'static, str> {
     Cow::Owned(i18n().translate(locale, key))
+}
+
+fn t_or(locale: &str, key: &'static str, fallback: &'static str) -> String {
+    let value = t(locale, key).into_owned();
+    if value == key {
+        fallback.to_string()
+    } else {
+        value
+    }
 }
 
 fn tf(locale: &str, key: &'static str, replacements: &[(&str, &str)]) -> String {

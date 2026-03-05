@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Asenna Greentic-työkalut ja valinnaisesti tenant-valtuutetut artefaktit.",
   "gtc.cmd.op.about": "Välitä komento greentic-operatorille.",
   "gtc.cmd.version.about": "Tulosta versiotiedot.",
-  "gtc.cmd.wizard.about": "Välitä komento greentic-devin wizardille.",
+  "gtc.cmd.wizard.about": "Avaa Greentic-ohjatun toiminnon valikko.",
   "gtc.debug.exec": "Reitittimen exec:",
   "gtc.doctor.missing": "PUUTTUU",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant-artefaktien asennus valmistui virhein.",
   "gtc.install.summary_ok": "Tenant-artefaktien asennus valmistui onnistuneesti.",
   "gtc.install.tenant_mode": "Tenant-tila käytössä kohteelle '{tenant}'.",
-  "gtc.install.using_env_key": "Käytetään tenant-avainta ympäristömuuttujasta {env}."
+  "gtc.install.using_env_key": "Käytetään tenant-avainta ympäristömuuttujasta {env}.",
+  "gtc.wizard.err.bundle_exists": "Bundle-polku on jo olemassa: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle-polku on pakollinen.",
+  "gtc.wizard.option.bundle": "Rakenna / päivitä tuotantopaketti",
+  "gtc.wizard.option.exit": "Poistu",
+  "gtc.wizard.option.pack": "Rakenna / päivitä paketti (flowt + komponentit)",
+  "gtc.wizard.prompt.bundle_path": "Bundle-hakemisto (esim. ./mybundle):",
+  "gtc.wizard.prompt.select": "Valitse vaihtoehto:",
+  "gtc.wizard.title": "Greentic-kehittäjän ohjattu toiminto"
 }

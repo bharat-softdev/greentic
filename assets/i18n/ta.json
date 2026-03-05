@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic கருவிகளை நிறுவி, விருப்பமாக tenant-அங்கீகரிக்கப்பட்ட artifacts-ஐயும் நிறுவு.",
   "gtc.cmd.op.about": "greentic-operator-க்கு pass through செய்.",
   "gtc.cmd.version.about": "பதிப்பு தகவலை அச்சிடு.",
-  "gtc.cmd.wizard.about": "greentic-dev wizard-க்கு pass through செய்.",
+  "gtc.cmd.wizard.about": "Greentic வழிகாட்டி மெனுவை திறக்கவும்.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "இல்லை",
   "gtc.doctor.ok": "சரி",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "tenant artifact நிறுவல் தோல்விகளுடன் முடிந்தது.",
   "gtc.install.summary_ok": "tenant artifact நிறுவல் வெற்றிகரமாக முடிந்தது.",
   "gtc.install.tenant_mode": "'{tenant}'-க்கு tenant mode செயல்படுத்தப்பட்டது.",
-  "gtc.install.using_env_key": "சூழல் மாறி {env} இலிருந்து tenant விசை பயன்படுத்தப்படுகிறது."
+  "gtc.install.using_env_key": "சூழல் மாறி {env} இலிருந்து tenant விசை பயன்படுத்தப்படுகிறது.",
+  "gtc.wizard.err.bundle_exists": "பண்டில் பாதை ஏற்கனவே உள்ளது: {path}",
+  "gtc.wizard.err.bundle_path_required": "பண்டில் பாதை அவசியம்.",
+  "gtc.wizard.option.bundle": "தயாரிப்பு தொகுப்பை உருவாக்கவும் / புதுப்பிக்கவும்",
+  "gtc.wizard.option.exit": "வெளியேறு",
+  "gtc.wizard.option.pack": "ஒரு தொகுப்பை உருவாக்கவும் / புதுப்பிக்கவும் (ஓட்டங்கள் + கூறுகள்)",
+  "gtc.wizard.prompt.bundle_path": "பண்டில் அடைவு (எ.கா. ./mybundle):",
+  "gtc.wizard.prompt.select": "விருப்பத்தைத் தேர்ந்தெடுக்கவும்:",
+  "gtc.wizard.title": "Greentic டெவலப்பர் வழிகாட்டி"
 }

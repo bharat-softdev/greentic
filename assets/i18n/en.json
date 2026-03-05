@@ -6,7 +6,7 @@
   "gtc.cmd.install.about": "Install Greentic tools and optionally tenant-authorized artifacts.",
   "gtc.cmd.dev.about": "Pass through to greentic-dev.",
   "gtc.cmd.op.about": "Pass through to greentic-operator.",
-  "gtc.cmd.wizard.about": "Pass through to greentic-dev wizard.",
+  "gtc.cmd.wizard.about": "Open the Greentic wizard menu.",
   "gtc.arg.locale.help": "UI locale for gtc help/output (BCP-47 tag).",
   "gtc.arg.debug_router.help": "Print resolved binary and args to stderr before exec.",
   "gtc.arg.tenant.help": "Tenant identifier for authorized installs.",
@@ -31,5 +31,13 @@
   "gtc.install.item_ok": "Installed {kind} '{name}': OK",
   "gtc.install.item_fail": "Installed {kind} '{name}': FAIL",
   "gtc.install.summary_ok": "Tenant artifact installation completed successfully.",
-  "gtc.install.summary_failed": "Tenant artifact installation completed with failures."
+  "gtc.install.summary_failed": "Tenant artifact installation completed with failures.",
+  "gtc.wizard.title": "Greentic Developer Wizard",
+  "gtc.wizard.option.pack": "Build / Update a Pack (flows + components)",
+  "gtc.wizard.option.bundle": "Build / Update a Production Bundle",
+  "gtc.wizard.option.exit": "Exit",
+  "gtc.wizard.prompt.select": "Select option:",
+  "gtc.wizard.prompt.bundle_path": "Bundle directory (e.g. ./mybundle):",
+  "gtc.wizard.err.bundle_path_required": "Bundle path is required.",
+  "gtc.wizard.err.bundle_exists": "Bundle path already exists: {path}"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Cài đặt công cụ Greentic và tùy chọn các hiện vật được tenant ủy quyền.",
   "gtc.cmd.op.about": "Chuyển tiếp tới greentic-operator.",
   "gtc.cmd.version.about": "In thông tin phiên bản.",
-  "gtc.cmd.wizard.about": "Chuyển tiếp tới trình wizard của greentic-dev.",
+  "gtc.cmd.wizard.about": "Mở menu trình hướng dẫn Greentic.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "THIẾU",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Hoàn tất cài đặt hiện vật tenant với lỗi.",
   "gtc.install.summary_ok": "Hoàn tất cài đặt hiện vật tenant thành công.",
   "gtc.install.tenant_mode": "Đã bật chế độ tenant cho '{tenant}'.",
-  "gtc.install.using_env_key": "Đang dùng khóa tenant từ biến môi trường {env}."
+  "gtc.install.using_env_key": "Đang dùng khóa tenant từ biến môi trường {env}.",
+  "gtc.wizard.err.bundle_exists": "Đường dẫn gói đã tồn tại: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bắt buộc phải có đường dẫn gói.",
+  "gtc.wizard.option.bundle": "Tạo / Cập nhật một gói Production",
+  "gtc.wizard.option.exit": "Thoát",
+  "gtc.wizard.option.pack": "Tạo / Cập nhật một gói (luồng + thành phần)",
+  "gtc.wizard.prompt.bundle_path": "Thư mục gói (ví dụ: ./mybundle):",
+  "gtc.wizard.prompt.select": "Chọn tùy chọn:",
+  "gtc.wizard.title": "Trình hướng dẫn nhà phát triển Greentic"
 }

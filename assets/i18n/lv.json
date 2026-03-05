@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Instalē Greentic rīkus un pēc izvēles tenanta autorizētus artefaktus.",
   "gtc.cmd.op.about": "Pārsūta uz greentic-operator.",
   "gtc.cmd.version.about": "Izdrukā versijas informāciju.",
-  "gtc.cmd.wizard.about": "Pārsūta uz greentic-dev vedni.",
+  "gtc.cmd.wizard.about": "Atveriet Greentic vedņa izvēlni.",
   "gtc.debug.exec": "Maršrutētāja izpilde:",
   "gtc.doctor.missing": "TRŪKST",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenanta artefaktu instalēšana pabeigta ar kļūdām.",
   "gtc.install.summary_ok": "Tenanta artefaktu instalēšana veiksmīgi pabeigta.",
   "gtc.install.tenant_mode": "Tenanta režīms ir iespējots priekš '{tenant}'.",
-  "gtc.install.using_env_key": "Tiek izmantota tenanta atslēga no vides mainīgā {env}."
+  "gtc.install.using_env_key": "Tiek izmantota tenanta atslēga no vides mainīgā {env}.",
+  "gtc.wizard.err.bundle_exists": "Pakotnes ceļš jau pastāv: {path}",
+  "gtc.wizard.err.bundle_path_required": "Pakotnes ceļš ir obligāts.",
+  "gtc.wizard.option.bundle": "Izveidot / Atjaunināt produkcijas pakotni",
+  "gtc.wizard.option.exit": "Iziet",
+  "gtc.wizard.option.pack": "Izveidot / Atjaunināt pakotni (plūsmas + komponenti)",
+  "gtc.wizard.prompt.bundle_path": "Pakotnes direktorija (piem., ./mybundle):",
+  "gtc.wizard.prompt.select": "Izvēlieties opciju:",
+  "gtc.wizard.title": "Greentic izstrādātāja vednis"
 }

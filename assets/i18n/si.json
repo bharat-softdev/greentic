@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic මෙවලම් ස්ථාපනය කර, විකල්ප ලෙස tenant-අවසරලත් artifacts ස්ථාපනය කරන්න.",
   "gtc.cmd.op.about": "greentic-operator වෙත passthrough කරන්න.",
   "gtc.cmd.version.about": "අනුවාද තොරතුරු මුද්‍රණය කරන්න.",
-  "gtc.cmd.wizard.about": "greentic-dev wizard වෙත passthrough කරන්න.",
+  "gtc.cmd.wizard.about": "Greentic විසාඩ් මෙනුව විවෘත කරන්න.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "නොමැත",
   "gtc.doctor.ok": "හරි",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "tenant artifact ස්ථාපනය අසමත්කම් සමඟ සම්පූර්ණ විය.",
   "gtc.install.summary_ok": "tenant artifact ස්ථාපනය සාර්ථකව සම්පූර්ණ විය.",
   "gtc.install.tenant_mode": "'{tenant}' සඳහා tenant mode සක්‍රීය කර ඇත.",
-  "gtc.install.using_env_key": "environment variable {env} වෙතින් tenant යතුර භාවිතා කරයි."
+  "gtc.install.using_env_key": "environment variable {env} වෙතින් tenant යතුර භාවිතා කරයි.",
+  "gtc.wizard.err.bundle_exists": "බණ්ඩල් මාර්ගය දැනටමත් පවතී: {path}",
+  "gtc.wizard.err.bundle_path_required": "බණ්ඩල් මාර්ගය අවශ්‍යයි.",
+  "gtc.wizard.option.bundle": "නිෂ්පාදන බණ්ඩලයක් ගොඩනඟන්න / යාවත්කාලීන කරන්න",
+  "gtc.wizard.option.exit": "පිටවන්න",
+  "gtc.wizard.option.pack": "පැක් එකක් ගොඩනඟන්න / යාවත්කාලීන කරන්න (ප්‍රවාහ + සංරචක)",
+  "gtc.wizard.prompt.bundle_path": "බණ්ඩල් ඩිරෙක්ටරිය (උදා: ./mybundle):",
+  "gtc.wizard.prompt.select": "විකල්පය තෝරන්න:",
+  "gtc.wizard.title": "Greentic සංවර්ධක විසාඩ්"
 }

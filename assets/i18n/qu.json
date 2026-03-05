@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic herramientakunata instalay, munaspa tenant-autorizasqa artefactokunatapas.",
   "gtc.cmd.op.about": "greentic-operatorman pasachiy.",
   "gtc.cmd.version.about": "Version willaykunata qillqay.",
-  "gtc.cmd.wizard.about": "greentic-dev wizardman pasachiy.",
+  "gtc.cmd.wizard.about": "Greentic yanapaq menúta kichariy.",
   "gtc.debug.exec": "Router ejecuta:",
   "gtc.doctor.missing": "PISI",
   "gtc.doctor.ok": "ALLIN",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant artefacto instalacion tukurqa ichaqa pantaykunawan.",
   "gtc.install.summary_ok": "Tenant artefacto instalacion sumaqta tukurqa.",
   "gtc.install.tenant_mode": "Tenant modo '{tenant}'paq habilitasqa.",
-  "gtc.install.using_env_key": "Tenant llaveqa variable de entorno {env}manta apakuchkan."
+  "gtc.install.using_env_key": "Tenant llaveqa variable de entorno {env}manta apakuchkan.",
+  "gtc.wizard.err.bundle_exists": "Bundle ñanqa ñam kachkanña: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle ñanqa munasqa kachkan.",
+  "gtc.wizard.option.bundle": "Ruray / Musuqyachiy Producción Bundle-ta",
+  "gtc.wizard.option.exit": "Lluqsiy",
+  "gtc.wizard.option.pack": "Ruray / Musuqyachiy Pack-ta (flows + components)",
+  "gtc.wizard.prompt.bundle_path": "Bundle mayt'u (kayhina. ./mybundle):",
+  "gtc.wizard.prompt.select": "Akllanaykita akllay:",
+  "gtc.wizard.title": "Greentic Desarrollador Yanapaq"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Installeer Greentic-tools en optioneel tenant-geautoriseerde artefacten.",
   "gtc.cmd.op.about": "Doorgeven aan greentic-operator.",
   "gtc.cmd.version.about": "Print versie-informatie.",
-  "gtc.cmd.wizard.about": "Doorgeven aan greentic-dev wizard.",
+  "gtc.cmd.wizard.about": "Open het Greentic wizardmenu.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "ONTBREEKT",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Installatie van tenant-artefacten voltooid met fouten.",
   "gtc.install.summary_ok": "Installatie van tenant-artefacten succesvol voltooid.",
   "gtc.install.tenant_mode": "Tenantmodus ingeschakeld voor '{tenant}'.",
-  "gtc.install.using_env_key": "Tenant-sleutel uit omgevingsvariabele {env} wordt gebruikt."
+  "gtc.install.using_env_key": "Tenant-sleutel uit omgevingsvariabele {env} wordt gebruikt.",
+  "gtc.wizard.err.bundle_exists": "Bundelpad bestaat al: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundelpad is vereist.",
+  "gtc.wizard.option.bundle": "Bouw / Werk een productiebundle bij",
+  "gtc.wizard.option.exit": "Afsluiten",
+  "gtc.wizard.option.pack": "Bouw / Werk een pack bij (flows + componenten)",
+  "gtc.wizard.prompt.bundle_path": "Bundelmap (bijv. ./mybundle):",
+  "gtc.wizard.prompt.select": "Selecteer optie:",
+  "gtc.wizard.title": "Greentic Developer Wizard"
 }

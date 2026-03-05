@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Nainštalovať nástroje Greentic a voliteľne artefakty autorizované tenantom.",
   "gtc.cmd.op.about": "Preposlať do greentic-operator.",
   "gtc.cmd.version.about": "Vypísať informácie o verzii.",
-  "gtc.cmd.wizard.about": "Preposlať do sprievodcu greentic-dev.",
+  "gtc.cmd.wizard.about": "Otvorte ponuku sprievodcu Greentic.",
   "gtc.debug.exec": "Spustenie routera:",
   "gtc.doctor.missing": "CHÝBA",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Inštalácia artefaktov tenanta bola dokončená s chybami.",
   "gtc.install.summary_ok": "Inštalácia artefaktov tenanta bola úspešne dokončená.",
   "gtc.install.tenant_mode": "Režim tenanta je povolený pre '{tenant}'.",
-  "gtc.install.using_env_key": "Používa sa kľúč tenanta z premennej prostredia {env}."
+  "gtc.install.using_env_key": "Používa sa kľúč tenanta z premennej prostredia {env}.",
+  "gtc.wizard.err.bundle_exists": "Cesta balíka už existuje: {path}",
+  "gtc.wizard.err.bundle_path_required": "Cesta k balíku je povinná.",
+  "gtc.wizard.option.bundle": "Vytvoriť / Aktualizovať produkčný balík",
+  "gtc.wizard.option.exit": "Ukončiť",
+  "gtc.wizard.option.pack": "Vytvoriť / Aktualizovať balík (toky + komponenty)",
+  "gtc.wizard.prompt.bundle_path": "Adresár balíka (napr. ./mybundle):",
+  "gtc.wizard.prompt.select": "Vyberte možnosť:",
+  "gtc.wizard.title": "Vývojársky sprievodca Greentic"
 }

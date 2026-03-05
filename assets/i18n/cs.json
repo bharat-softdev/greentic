@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Nainstaluje nástroje Greentic a volitelně artefakty autorizované tenantem.",
   "gtc.cmd.op.about": "Předáno do greentic-operator.",
   "gtc.cmd.version.about": "Vypíše informace o verzi.",
-  "gtc.cmd.wizard.about": "Předáno do průvodce greentic-dev.",
+  "gtc.cmd.wizard.about": "Otevřít nabídku průvodce Greentic.",
   "gtc.debug.exec": "Spuštění routeru:",
   "gtc.doctor.missing": "CHYBÍ",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Instalace tenantních artefaktů byla dokončena s chybami.",
   "gtc.install.summary_ok": "Instalace tenantních artefaktů byla úspěšně dokončena.",
   "gtc.install.tenant_mode": "Režim tenanta je povolen pro '{tenant}'.",
-  "gtc.install.using_env_key": "Používá se tenantní klíč z proměnné prostředí {env}."
+  "gtc.install.using_env_key": "Používá se tenantní klíč z proměnné prostředí {env}.",
+  "gtc.wizard.err.bundle_exists": "Cesta balíčku již existuje: {path}",
+  "gtc.wizard.err.bundle_path_required": "Cesta balíčku je povinná.",
+  "gtc.wizard.option.bundle": "Sestavit / aktualizovat produkční balíček",
+  "gtc.wizard.option.exit": "Ukončit",
+  "gtc.wizard.option.pack": "Sestavit / aktualizovat balíček (toky + komponenty)",
+  "gtc.wizard.prompt.bundle_path": "Adresář balíčku (např. ./mybundle):",
+  "gtc.wizard.prompt.select": "Vyberte možnost:",
+  "gtc.wizard.title": "Průvodce pro vývojáře Greentic"
 }

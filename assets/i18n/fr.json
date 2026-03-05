@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Installe les outils Greentic et, en option, des artéfacts autorisés par locataire.",
   "gtc.cmd.op.about": "Transmet à greentic-operator.",
   "gtc.cmd.version.about": "Affiche les informations de version.",
-  "gtc.cmd.wizard.about": "Transmet à l'assistant de greentic-dev.",
+  "gtc.cmd.wizard.about": "Ouvrir le menu de l'assistant Greentic.",
   "gtc.debug.exec": "Exécution du routeur :",
   "gtc.doctor.missing": "ABSENT",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Installation des artéfacts du locataire terminée avec des échecs.",
   "gtc.install.summary_ok": "Installation des artéfacts du locataire terminée avec succès.",
   "gtc.install.tenant_mode": "Mode locataire activé pour '{tenant}'.",
-  "gtc.install.using_env_key": "Utilisation de la clé locataire depuis la variable d'environnement {env}."
+  "gtc.install.using_env_key": "Utilisation de la clé locataire depuis la variable d'environnement {env}.",
+  "gtc.wizard.err.bundle_exists": "Le chemin du bundle existe déjà : {path}",
+  "gtc.wizard.err.bundle_path_required": "Le chemin du bundle est requis.",
+  "gtc.wizard.option.bundle": "Construire / Mettre à jour un bundle de production",
+  "gtc.wizard.option.exit": "Quitter",
+  "gtc.wizard.option.pack": "Construire / Mettre à jour un pack (flux + composants)",
+  "gtc.wizard.prompt.bundle_path": "Répertoire du bundle (par ex. ./mybundle) :",
+  "gtc.wizard.prompt.select": "Sélectionnez une option :",
+  "gtc.wizard.title": "Assistant développeur Greentic"
 }

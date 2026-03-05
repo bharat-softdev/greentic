@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic tools और वैकल्पिक रूप से tenant-authorized artifacts इंस्टॉल करें।",
   "gtc.cmd.op.about": "greentic-operator को pass through करें।",
   "gtc.cmd.version.about": "वर्ज़न जानकारी प्रिंट करें।",
-  "gtc.cmd.wizard.about": "greentic-dev wizard को pass through करें।",
+  "gtc.cmd.wizard.about": "Greentic विज़ार्ड मेनू खोलें।",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "अनुपस्थित",
   "gtc.doctor.ok": "ठीक",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant artifact इंस्टॉलेशन विफलताओं के साथ पूर्ण हुआ।",
   "gtc.install.summary_ok": "Tenant artifact इंस्टॉलेशन सफलतापूर्वक पूर्ण हुआ।",
   "gtc.install.tenant_mode": "'{tenant}' के लिए tenant mode सक्षम है।",
-  "gtc.install.using_env_key": "environment variable {env} से tenant key का उपयोग किया जा रहा है।"
+  "gtc.install.using_env_key": "environment variable {env} से tenant key का उपयोग किया जा रहा है।",
+  "gtc.wizard.err.bundle_exists": "बंडल पथ पहले से मौजूद है: {path}",
+  "gtc.wizard.err.bundle_path_required": "बंडल पथ आवश्यक है।",
+  "gtc.wizard.option.bundle": "प्रोडक्शन बंडल बनाएँ / अपडेट करें",
+  "gtc.wizard.option.exit": "बाहर निकलें",
+  "gtc.wizard.option.pack": "एक पैक बनाएँ / अपडेट करें (flows + components)",
+  "gtc.wizard.prompt.bundle_path": "बंडल निर्देशिका (उदा. ./mybundle):",
+  "gtc.wizard.prompt.select": "विकल्प चुनें:",
+  "gtc.wizard.title": "Greentic डेवलपर विज़ार्ड"
 }

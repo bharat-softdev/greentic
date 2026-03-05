@@ -1,0 +1,21 @@
+{
+  "plan_version": 1,
+  "metadata": {
+    "target": "launcher",
+    "mode": "main",
+    "locale": "de",
+    "frontend": "text"
+  },
+  "steps": [
+    {
+      "type": "LaunchPackWizard"
+    },
+    {
+      "type": "RunCommand",
+      "program": "greentic-pack",
+      "args": [
+        "wizard"
+      ]
+    }
+  ]
+}

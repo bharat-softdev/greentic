@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Installer Greentic-værktøjer og valgfrit tenant-autoriserede artefakter.",
   "gtc.cmd.op.about": "Sendes videre til greentic-operator.",
   "gtc.cmd.version.about": "Udskriv versionsoplysninger.",
-  "gtc.cmd.wizard.about": "Sendes videre til greentic-dev-guiden.",
+  "gtc.cmd.wizard.about": "Åbn Greentic-guide-menuen.",
   "gtc.debug.exec": "Router-udførelse:",
   "gtc.doctor.missing": "MANGLER",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Installation af tenant-artefakter fuldført med fejl.",
   "gtc.install.summary_ok": "Installation af tenant-artefakter fuldført uden fejl.",
   "gtc.install.tenant_mode": "Tenant-tilstand aktiveret for '{tenant}'.",
-  "gtc.install.using_env_key": "Bruger tenant-nøgle fra miljøvariablen {env}."
+  "gtc.install.using_env_key": "Bruger tenant-nøgle fra miljøvariablen {env}.",
+  "gtc.wizard.err.bundle_exists": "Bundle-stien findes allerede: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle-sti er påkrævet.",
+  "gtc.wizard.option.bundle": "Byg / opdater en produktions-bundle",
+  "gtc.wizard.option.exit": "Afslut",
+  "gtc.wizard.option.pack": "Byg / opdater en pakke (flows + komponenter)",
+  "gtc.wizard.prompt.bundle_path": "Bundle-mappe (f.eks. ./mybundle):",
+  "gtc.wizard.prompt.select": "Vælg mulighed:",
+  "gtc.wizard.title": "Greentic udviklerguide"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic eszközök és opcionálisan bérlő által engedélyezett artefaktok telepítése.",
   "gtc.cmd.op.about": "Továbbítás a greentic-operator felé.",
   "gtc.cmd.version.about": "Verzióinformációk kiírása.",
-  "gtc.cmd.wizard.about": "Továbbítás a greentic-dev varázslóhoz.",
+  "gtc.cmd.wizard.about": "Nyissa meg a Greentic varázsló menüjét.",
   "gtc.debug.exec": "Útválasztó exec:",
   "gtc.doctor.missing": "HIÁNYZIK",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "A bérlői artefaktok telepítése hibákkal fejeződött be.",
   "gtc.install.summary_ok": "A bérlői artefaktok telepítése sikeresen befejeződött.",
   "gtc.install.tenant_mode": "Bérlői mód engedélyezve ehhez: '{tenant}'.",
-  "gtc.install.using_env_key": "Bérlői kulcs használata a(z) {env} környezeti változóból."
+  "gtc.install.using_env_key": "Bérlői kulcs használata a(z) {env} környezeti változóból.",
+  "gtc.wizard.err.bundle_exists": "A bundle elérési útja már létezik: {path}",
+  "gtc.wizard.err.bundle_path_required": "A bundle elérési útja kötelező.",
+  "gtc.wizard.option.bundle": "Éles csomag összeállítása / frissítése",
+  "gtc.wizard.option.exit": "Kilépés",
+  "gtc.wizard.option.pack": "Csomag összeállítása / frissítése (folyamatok + komponensek)",
+  "gtc.wizard.prompt.bundle_path": "Bundle könyvtár (pl. ./mybundle):",
+  "gtc.wizard.prompt.select": "Válasszon lehetőséget:",
+  "gtc.wizard.title": "Greentic fejlesztői varázsló"
 }

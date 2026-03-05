@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic ಸಾಧನಗಳನ್ನು ಮತ್ತು ಐಚ್ಛಿಕವಾಗಿ tenant-ಅಧಿಕೃತ ಕಲಾಕೃತಿಗಳನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ.",
   "gtc.cmd.op.about": "greentic-operator ಗೆ ಪಾಸ್-ಥ್ರೂ.",
   "gtc.cmd.version.about": "ಆವೃತ್ತಿ ಮಾಹಿತಿಯನ್ನು ಮುದ್ರಿಸಿ.",
-  "gtc.cmd.wizard.about": "greentic-dev wizard ಗೆ ಪಾಸ್-ಥ್ರೂ.",
+  "gtc.cmd.wizard.about": "Greentic ವಿಜಾರ್ಡ್ ಮೆನು ತೆರೆಯಿರಿ.",
   "gtc.debug.exec": "ರೌಟರ್ exec:",
   "gtc.doctor.missing": "ಕಾಣೆಯಾಗಿದೆ",
   "gtc.doctor.ok": "ಸರಿ",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant ಕಲಾಕೃತಿ ಇನ್‌ಸ್ಟಾಲೇಶನ್ ವೈಫಲ್ಯಗಳೊಂದಿಗೆ ಪೂರ್ಣಗೊಂಡಿತು.",
   "gtc.install.summary_ok": "Tenant ಕಲಾಕೃತಿ ಇನ್‌ಸ್ಟಾಲೇಶನ್ ಯಶಸ್ವಿಯಾಗಿ ಪೂರ್ಣಗೊಂಡಿತು.",
   "gtc.install.tenant_mode": "'{tenant}' ಗಾಗಿ Tenant ಮೋಡ್ ಸಕ್ರಿಯವಾಗಿದೆ.",
-  "gtc.install.using_env_key": "ಪರಿಸರ ಚರ {env} ಇಂದ tenant ಕೀ ಬಳಸಲಾಗುತ್ತಿದೆ."
+  "gtc.install.using_env_key": "ಪರಿಸರ ಚರ {env} ಇಂದ tenant ಕೀ ಬಳಸಲಾಗುತ್ತಿದೆ.",
+  "gtc.wizard.err.bundle_exists": "ಬಂಡಲ್ ಪಥ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ: {path}",
+  "gtc.wizard.err.bundle_path_required": "ಬಂಡಲ್ ಪಥ ಅಗತ್ಯವಿದೆ.",
+  "gtc.wizard.option.bundle": "ಉತ್ಪಾದನಾ ಬಂಡಲ್ ನಿರ್ಮಿಸಿ / ನವೀಕರಿಸಿ",
+  "gtc.wizard.option.exit": "ನಿರ್ಗಮಿಸಿ",
+  "gtc.wizard.option.pack": "ಪ್ಯಾಕ್ ನಿರ್ಮಿಸಿ / ನವೀಕರಿಸಿ (ಫ್ಲೋಗಳು + ಘಟಕಗಳು)",
+  "gtc.wizard.prompt.bundle_path": "ಬಂಡಲ್ ಡೈರೆಕ್ಟರಿ (ಉದಾ. ./mybundle):",
+  "gtc.wizard.prompt.select": "ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ:",
+  "gtc.wizard.title": "Greentic ಡೆವಲಪರ್ ವಿಜಾರ್ಡ್"
 }

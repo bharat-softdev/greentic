@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic araçlarını ve isteğe bağlı olarak kiracı yetkili artefaktları kur.",
   "gtc.cmd.op.about": "greentic-operator'a aktar.",
   "gtc.cmd.version.about": "Sürüm bilgilerini yazdır.",
-  "gtc.cmd.wizard.about": "greentic-dev sihirbazına aktar.",
+  "gtc.cmd.wizard.about": "Greentic sihirbaz menüsünü açın.",
   "gtc.debug.exec": "Yönlendirici exec:",
   "gtc.doctor.missing": "EKSİK",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Kiracı artefaktı kurulumu hatalarla tamamlandı.",
   "gtc.install.summary_ok": "Kiracı artefaktı kurulumu başarıyla tamamlandı.",
   "gtc.install.tenant_mode": "'{tenant}' için kiracı modu etkinleştirildi.",
-  "gtc.install.using_env_key": "{env} ortam değişkeninden kiracı anahtarı kullanılıyor."
+  "gtc.install.using_env_key": "{env} ortam değişkeninden kiracı anahtarı kullanılıyor.",
+  "gtc.wizard.err.bundle_exists": "Paket yolu zaten mevcut: {path}",
+  "gtc.wizard.err.bundle_path_required": "Paket yolu gerekli.",
+  "gtc.wizard.option.bundle": "Bir Üretim Paketi Oluştur / Güncelle",
+  "gtc.wizard.option.exit": "Çıkış",
+  "gtc.wizard.option.pack": "Bir Paket Oluştur / Güncelle (akışlar + bileşenler)",
+  "gtc.wizard.prompt.bundle_path": "Paket dizini (ör. ./mybundle):",
+  "gtc.wizard.prompt.select": "Seçenek seçin:",
+  "gtc.wizard.title": "Greentic Geliştirici Sihirbazı"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic tools များကို install လုပ်ပြီး tenant-authorized artifacts များကို လိုအပ်သလို ထည့်သွင်းပါ။",
   "gtc.cmd.op.about": "greentic-operator သို့ ဖြတ်သန်းပို့ပါ။",
   "gtc.cmd.version.about": "version အချက်အလက်ကို ထုတ်ပြပါ။",
-  "gtc.cmd.wizard.about": "greentic-dev wizard သို့ ဖြတ်သန်းပို့ပါ။",
+  "gtc.cmd.wizard.about": "Greentic ဝိဇတ် မီနူးကို ဖွင့်ပါ။",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "မရှိ",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant artifact installation သည် မအောင်မြင်မှုများနှင့် ပြီးစီးခဲ့သည်။",
   "gtc.install.summary_ok": "Tenant artifact installation ကို အောင်မြင်စွာ ပြီးစီးခဲ့သည်။",
   "gtc.install.tenant_mode": "'{tenant}' အတွက် tenant mode ကို ဖွင့်ထားသည်။",
-  "gtc.install.using_env_key": "Environment variable {env} မှ tenant key ကို အသုံးပြုနေသည်။"
+  "gtc.install.using_env_key": "Environment variable {env} မှ tenant key ကို အသုံးပြုနေသည်။",
+  "gtc.wizard.err.bundle_exists": "Bundle လမ်းကြောင်း ရှိပြီးသားဖြစ်နေသည်: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle လမ်းကြောင်း လိုအပ်သည်။",
+  "gtc.wizard.option.bundle": "Production Bundle တစ်ခုကို တည်ဆောက် / အပ်ဒိတ်လုပ်ပါ",
+  "gtc.wizard.option.exit": "ထွက်ရန်",
+  "gtc.wizard.option.pack": "Pack တစ်ခုကို တည်ဆောက် / အပ်ဒိတ်လုပ်ပါ (flows + components)",
+  "gtc.wizard.prompt.bundle_path": "Bundle ဒိုင်ရက်ထရီ (ဥပမာ ./mybundle):",
+  "gtc.wizard.prompt.select": "ရွေးချယ်စရာကို ရွေးပါ:",
+  "gtc.wizard.title": "Greentic Developer ဝိဇတ်"
 }

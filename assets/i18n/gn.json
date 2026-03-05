@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Emohenda tembiporu Greentic ha, ikatúramo, artefacto tenant oñemoneĩva.",
   "gtc.cmd.op.about": "Emondo meme greentic-operator-pe.",
   "gtc.cmd.version.about": "Ehechauka marandu versión rehegua.",
-  "gtc.cmd.wizard.about": "Emondo meme greentic-dev wizard-pe.",
+  "gtc.cmd.wizard.about": "Embojuruja Greentic asisténte menú.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "NDAIPÓI",
   "gtc.doctor.ok": "OĨ PORÃ",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Ñemohenda artefacto tenant rehegua opa ojavýva ndive.",
   "gtc.install.summary_ok": "Ñemohenda artefacto tenant rehegua opa porã hag̃uáicha.",
   "gtc.install.tenant_mode": "Modo tenant oñemyendy '{tenant}'-pe g̃uarã.",
-  "gtc.install.using_env_key": "Ojejapo clave tenant rehegua variable de entorno {env} guive."
+  "gtc.install.using_env_key": "Ojejapo clave tenant rehegua variable de entorno {env} guive.",
+  "gtc.wizard.err.bundle_exists": "Bundle rape oĩma: {path}",
+  "gtc.wizard.err.bundle_path_required": "Tekotevẽ bundle rape.",
+  "gtc.wizard.option.bundle": "Emopu'ã / Embohekopyahu peteĩ Production Bundle",
+  "gtc.wizard.option.exit": "Ñesẽ",
+  "gtc.wizard.option.pack": "Emopu'ã / Embohekopyahu peteĩ Pack (flows + components)",
+  "gtc.wizard.prompt.bundle_path": "Bundle ñongatuha (techapyrãramo ./mybundle):",
+  "gtc.wizard.prompt.select": "Eiporavo peteĩ opción:",
+  "gtc.wizard.title": "Greentic Mbohekoha Asisténte"
 }

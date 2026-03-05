@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Installer Greentic-verktøy og eventuelt tenant-autoriserte artefakter.",
   "gtc.cmd.op.about": "Videresend til greentic-operator.",
   "gtc.cmd.version.about": "Skriv ut versjonsinformasjon.",
-  "gtc.cmd.wizard.about": "Videresend til greentic-dev wizard.",
+  "gtc.cmd.wizard.about": "Åpne Greentic-veivisermenyen.",
   "gtc.debug.exec": "Router exec:",
   "gtc.doctor.missing": "MANGLER",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Tenant-artefaktinstallasjon fullført med feil.",
   "gtc.install.summary_ok": "Tenant-artefaktinstallasjon fullført.",
   "gtc.install.tenant_mode": "Tenant-modus aktivert for '{tenant}'.",
-  "gtc.install.using_env_key": "Bruker tenant-nøkkel fra miljøvariabelen {env}."
+  "gtc.install.using_env_key": "Bruker tenant-nøkkel fra miljøvariabelen {env}.",
+  "gtc.wizard.err.bundle_exists": "Bundle-sti finnes allerede: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle-sti er påkrevd.",
+  "gtc.wizard.option.bundle": "Bygg / oppdater en produksjonspakke",
+  "gtc.wizard.option.exit": "Avslutt",
+  "gtc.wizard.option.pack": "Bygg / oppdater en pakke (flyter + komponenter)",
+  "gtc.wizard.prompt.bundle_path": "Bundle-katalog (f.eks. ./mybundle):",
+  "gtc.wizard.prompt.select": "Velg alternativ:",
+  "gtc.wizard.title": "Greentic utviklerveiviser"
 }

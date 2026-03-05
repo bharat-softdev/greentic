@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Greentic ਟੂਲ ਇੰਸਟਾਲ ਕਰੋ ਅਤੇ ਚੋਣਵਾਂ ਤੌਰ ਤੇ tenant-ਅਧਿਕਾਰਿਤ ਆਰਟੀਫੈਕਟਸ।",
   "gtc.cmd.op.about": "greentic-operator ਵੱਲ ਪਾਸ ਕਰੋ।",
   "gtc.cmd.version.about": "ਵਰਜਨ ਜਾਣਕਾਰੀ ਪ੍ਰਿੰਟ ਕਰੋ।",
-  "gtc.cmd.wizard.about": "greentic-dev wizard ਵੱਲ ਪਾਸ ਕਰੋ।",
+  "gtc.cmd.wizard.about": "Greentic ਵਿਜ਼ਾਰਡ ਮੈਨੂ ਖੋਲ੍ਹੋ।",
   "gtc.debug.exec": "ਰਾਊਟਰ exec:",
   "gtc.doctor.missing": "ਗਾਇਬ",
   "gtc.doctor.ok": "ਠੀਕ",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "tenant ਆਰਟੀਫੈਕਟ ਇੰਸਟਾਲੇਸ਼ਨ ਅਸਫਲਤਾਵਾਂ ਨਾਲ ਪੂਰਾ ਹੋਇਆ।",
   "gtc.install.summary_ok": "tenant ਆਰਟੀਫੈਕਟ ਇੰਸਟਾਲੇਸ਼ਨ ਸਫਲਤਾਪੂਰਵਕ ਪੂਰਾ ਹੋਇਆ।",
   "gtc.install.tenant_mode": "'{tenant}' ਲਈ tenant ਮੋਡ ਸਮਰੱਥ ਕੀਤਾ ਗਿਆ।",
-  "gtc.install.using_env_key": "ਵਾਤਾਵਰਣ ਵੇਰੀਏਬਲ {env} ਤੋਂ tenant ਕੁੰਜੀ ਵਰਤੀ ਜਾ ਰਹੀ ਹੈ।"
+  "gtc.install.using_env_key": "ਵਾਤਾਵਰਣ ਵੇਰੀਏਬਲ {env} ਤੋਂ tenant ਕੁੰਜੀ ਵਰਤੀ ਜਾ ਰਹੀ ਹੈ।",
+  "gtc.wizard.err.bundle_exists": "ਬੰਡਲ ਮਾਰਗ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ: {path}",
+  "gtc.wizard.err.bundle_path_required": "ਬੰਡਲ ਮਾਰਗ ਲਾਜ਼ਮੀ ਹੈ।",
+  "gtc.wizard.option.bundle": "ਇੱਕ ਪ੍ਰੋਡਕਸ਼ਨ ਬੰਡਲ ਬਣਾਓ / ਅਪਡੇਟ ਕਰੋ",
+  "gtc.wizard.option.exit": "ਬਾਹਰ ਨਿਕਲੋ",
+  "gtc.wizard.option.pack": "ਇੱਕ ਪੈਕ ਬਣਾਓ / ਅਪਡੇਟ ਕਰੋ (ਫਲੋਜ਼ + ਕੰਪੋਨੈਂਟਸ)",
+  "gtc.wizard.prompt.bundle_path": "ਬੰਡਲ ਡਾਇਰੈਕਟਰੀ (ਜਿਵੇਂ ਕਿ ./mybundle):",
+  "gtc.wizard.prompt.select": "ਵਿਕਲਪ ਚੁਣੋ:",
+  "gtc.wizard.title": "Greentic ਡਿਵੈਲਪਰ ਵਿਜ਼ਾਰਡ"
 }

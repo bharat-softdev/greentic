@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Paigalda Greenticu tööriistad ja soovi korral rentniku autoriseeritud artefaktid.",
   "gtc.cmd.op.about": "Edasta edasi käsule greentic-operator.",
   "gtc.cmd.version.about": "Prindi versiooniteave.",
-  "gtc.cmd.wizard.about": "Edasta edasi greentic-dev wizardile.",
+  "gtc.cmd.wizard.about": "Ava Greenticu viisardi menüü.",
   "gtc.debug.exec": "Ruuderi käivitus:",
   "gtc.doctor.missing": "PUUDUB",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Rentniku artefaktide paigaldus lõpetati tõrgetega.",
   "gtc.install.summary_ok": "Rentniku artefaktide paigaldus lõpetati edukalt.",
   "gtc.install.tenant_mode": "Rentniku režiim on '{tenant}' jaoks lubatud.",
-  "gtc.install.using_env_key": "Kasutan rentniku võtit keskkonnamuutujast {env}."
+  "gtc.install.using_env_key": "Kasutan rentniku võtit keskkonnamuutujast {env}.",
+  "gtc.wizard.err.bundle_exists": "Bundle'i tee on juba olemas: {path}",
+  "gtc.wizard.err.bundle_path_required": "Bundle'i tee on kohustuslik.",
+  "gtc.wizard.option.bundle": "Loo / uuenda tootmiskogum",
+  "gtc.wizard.option.exit": "Välju",
+  "gtc.wizard.option.pack": "Loo / uuenda pakett (vood + komponendid)",
+  "gtc.wizard.prompt.bundle_path": "Bundle'i kataloog (nt ./mybundle):",
+  "gtc.wizard.prompt.select": "Vali suvand:",
+  "gtc.wizard.title": "Greenticu arendaja viisard"
 }

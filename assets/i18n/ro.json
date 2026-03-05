@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Instalează uneltele Greentic și opțional artefacte autorizate pentru tenant.",
   "gtc.cmd.op.about": "Redirecționează către greentic-operator.",
   "gtc.cmd.version.about": "Afișează informațiile despre versiune.",
-  "gtc.cmd.wizard.about": "Redirecționează către asistentul greentic-dev.",
+  "gtc.cmd.wizard.about": "Deschide meniul asistentului Greentic.",
   "gtc.debug.exec": "Execuție router:",
   "gtc.doctor.missing": "LIPSĂ",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Instalarea artefactelor tenantului s-a finalizat cu erori.",
   "gtc.install.summary_ok": "Instalarea artefactelor tenantului s-a finalizat cu succes.",
   "gtc.install.tenant_mode": "Modul tenant este activat pentru '{tenant}'.",
-  "gtc.install.using_env_key": "Se utilizează cheia tenantului din variabila de mediu {env}."
+  "gtc.install.using_env_key": "Se utilizează cheia tenantului din variabila de mediu {env}.",
+  "gtc.wizard.err.bundle_exists": "Calea pachetului există deja: {path}",
+  "gtc.wizard.err.bundle_path_required": "Calea pachetului este obligatorie.",
+  "gtc.wizard.option.bundle": "Construiește / Actualizează un pachet de producție",
+  "gtc.wizard.option.exit": "Ieșire",
+  "gtc.wizard.option.pack": "Construiește / Actualizează un pachet (fluxuri + componente)",
+  "gtc.wizard.prompt.bundle_path": "Directorul pachetului (de ex. ./mybundle):",
+  "gtc.wizard.prompt.select": "Selectează opțiunea:",
+  "gtc.wizard.title": "Asistentul pentru dezvoltatori Greentic"
 }

@@ -10,7 +10,7 @@
   "gtc.cmd.install.about": "Инсталира инструменти на Greentic и по избор артефакти, оторизирани за тенанта.",
   "gtc.cmd.op.about": "Препраща към greentic-operator.",
   "gtc.cmd.version.about": "Отпечатва информация за версията.",
-  "gtc.cmd.wizard.about": "Препраща към съветника на greentic-dev.",
+  "gtc.cmd.wizard.about": "Отворете менюто на съветника Greentic.",
   "gtc.debug.exec": "Изпълнение на маршрутизатора:",
   "gtc.doctor.missing": "ЛИПСВА",
   "gtc.doctor.ok": "OK",
@@ -31,5 +31,13 @@
   "gtc.install.summary_failed": "Инсталацията на артефакти за тенант завърши с неуспехи.",
   "gtc.install.summary_ok": "Инсталацията на артефакти за тенант завърши успешно.",
   "gtc.install.tenant_mode": "Режимът за тенант е активиран за '{tenant}'.",
-  "gtc.install.using_env_key": "Използва се ключ за тенант от променливата на средата {env}."
+  "gtc.install.using_env_key": "Използва се ключ за тенант от променливата на средата {env}.",
+  "gtc.wizard.err.bundle_exists": "Пътят на пакета вече съществува: {path}",
+  "gtc.wizard.err.bundle_path_required": "Изисква се път на пакета.",
+  "gtc.wizard.option.bundle": "Изграждане / Обновяване на продукционен пакет",
+  "gtc.wizard.option.exit": "Изход",
+  "gtc.wizard.option.pack": "Изграждане / Обновяване на пакет (потоци + компоненти)",
+  "gtc.wizard.prompt.bundle_path": "Директория на пакета (напр. ./mybundle):",
+  "gtc.wizard.prompt.select": "Изберете опция:",
+  "gtc.wizard.title": "Съветник за разработчици на Greentic"
 }
