@@ -12,15 +12,18 @@ use std::sync::OnceLock;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use directories::BaseDirs;
+use greentic_distributor_client::{OciPackFetcher, PackFetchOptions, oci_packs::DefaultRegistryClient};
 use greentic_i18n::{normalize_locale, select_locale_with_sources};
 use serde::Deserialize;
 use serde_json::Value;
+use tempfile::TempDir;
 
 use crate::dist::build_adapter;
 
 const DEV_BIN: &str = "greentic-dev";
 const OP_BIN: &str = "greentic-operator";
 const PACK_BIN: &str = "greentic-pack";
+const START_BIN: &str = "greentic-start";
 
 const LOCALES_JSON: &str = include_str!("../../assets/i18n/locales.json");
 include!(concat!(env!("OUT_DIR"), "/embedded_i18n.rs"));
@@ -53,6 +56,7 @@ fn run(raw_args: Vec<String>) -> i32 {
         }
         Some(("doctor", _)) => run_doctor(&locale),
         Some(("install", sub_matches)) => run_install(sub_matches, debug, &locale),
+        Some(("start", sub_matches)) => run_start(sub_matches, debug, &locale),
         Some(("dev", sub_matches)) => {
             let tail = collect_tail(sub_matches);
             passthrough(DEV_BIN, &tail, debug, &locale)
@@ -125,6 +129,25 @@ fn build_cli(locale: &str) -> Command {
                         .num_args(1)
                         .help(t(locale, "gtc.arg.key.help").into_owned()),
                 ),
+        )
+        .subcommand(
+            Command::new("start")
+                .about(t_or(
+                    locale,
+                    "gtc.cmd.start.about",
+                    "Start a bundle from local or remote reference."
+                ))
+                .arg(
+                    Arg::new("bundle-ref")
+                        .value_name("BUNDLE_REF")
+                        .required(true)
+                        .help(t_or(
+                            locale,
+                            "gtc.arg.bundle_ref.help",
+                            "Bundle path/ref: local path, file://, oci://, repo://, store://"
+                        )),
+                )
+                .arg(cmd_args.clone()),
         )
         .subcommand(
             Command::new("dev")
@@ -250,6 +273,165 @@ fn locale_from_args(raw_args: &[String]) -> Option<String> {
         }
     }
     None
+}
+
+struct StartBundleResolution {
+    bundle_dir: PathBuf,
+    _hold: Option<TempDir>,
+}
+
+fn run_start(sub_matches: &ArgMatches, debug: bool, locale: &str) -> i32 {
+    let Some(bundle_ref) = sub_matches.get_one::<String>("bundle-ref") else {
+        eprintln!("{}", t_or(locale, "gtc.start.err.bundle_required", "bundle ref is required"));
+        return 2;
+    };
+    let tail = collect_tail(sub_matches);
+    let resolved = match resolve_bundle_reference(bundle_ref) {
+        Ok(value) => value,
+        Err(err) => {
+            eprintln!("{}: {err}", t_or(locale, "gtc.start.err.resolve_failed", "failed to resolve bundle"));
+            return 1;
+        }
+    };
+    let mut forwarded = vec![
+        "demo".to_string(),
+        "start".to_string(),
+        "--bundle".to_string(),
+        resolved.bundle_dir.display().to_string(),
+    ];
+    forwarded.extend(tail);
+    passthrough(START_BIN, &forwarded, debug, locale)
+}
+
+fn resolve_bundle_reference(reference: &str) -> Result<StartBundleResolution, String> {
+    let trimmed = reference.trim();
+    if trimmed.is_empty() {
+        return Err("bundle reference is empty".to_string());
+    }
+    if let Some(path) = parse_local_bundle_ref(trimmed) {
+        return resolve_local_bundle_path(path);
+    }
+
+    let mapped = map_remote_bundle_ref(trimmed)?;
+    let rt = tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .map_err(|e| format!("failed to build tokio runtime: {e}"))?;
+    let fetcher: OciPackFetcher<DefaultRegistryClient> = OciPackFetcher::new(PackFetchOptions {
+        allow_tags: true,
+        offline: false,
+        ..PackFetchOptions::default()
+    });
+    let fetched = rt
+        .block_on(fetcher.fetch_pack_to_cache(&mapped))
+        .map_err(|e| format!("failed to fetch remote bundle {trimmed}: {e}"))?;
+    resolve_archive_bundle_path(fetched.path)
+}
+
+fn parse_local_bundle_ref(reference: &str) -> Option<PathBuf> {
+    if let Some(rest) = reference.strip_prefix("file://") {
+        if rest.trim().is_empty() {
+            return None;
+        }
+        return Some(PathBuf::from(rest));
+    }
+    if reference.contains("://") {
+        return None;
+    }
+    Some(PathBuf::from(reference))
+}
+
+fn resolve_local_bundle_path(path: PathBuf) -> Result<StartBundleResolution, String> {
+    if !path.exists() {
+        return Err(format!("bundle path does not exist: {}", path.display()));
+    }
+    if path.is_dir() {
+        return Ok(StartBundleResolution {
+            bundle_dir: path,
+            _hold: None,
+        });
+    }
+    resolve_archive_bundle_path(path)
+}
+
+fn resolve_archive_bundle_path(archive_path: PathBuf) -> Result<StartBundleResolution, String> {
+    if !archive_path.is_file() {
+        return Err(format!("bundle artifact is not a file: {}", archive_path.display()));
+    }
+    let temp = tempfile::tempdir().map_err(|e| e.to_string())?;
+    let staging = temp.path().join("staging");
+    fs::create_dir_all(&staging).map_err(|e| e.to_string())?;
+    let file_name = archive_path
+        .file_name()
+        .and_then(|value| value.to_str())
+        .unwrap_or("bundle.bin")
+        .to_string();
+    fs::copy(&archive_path, staging.join(file_name)).map_err(|e| e.to_string())?;
+
+    let extracted = temp.path().join("bundle");
+    fs::create_dir_all(&extracted).map_err(|e| e.to_string())?;
+    expand_into_target(&staging, &extracted)?;
+    let bundle_dir = detect_bundle_root(&extracted);
+    Ok(StartBundleResolution {
+        bundle_dir,
+        _hold: Some(temp),
+    })
+}
+
+fn detect_bundle_root(extracted_root: &Path) -> PathBuf {
+    if extracted_root.join("greentic.demo.yaml").exists() {
+        return extracted_root.to_path_buf();
+    }
+    let mut dirs = Vec::new();
+    if let Ok(entries) = fs::read_dir(extracted_root) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                dirs.push(path);
+            }
+        }
+    }
+    if dirs.len() == 1 && dirs[0].join("greentic.demo.yaml").exists() {
+        return dirs.remove(0);
+    }
+    extracted_root.to_path_buf()
+}
+
+fn map_remote_bundle_ref(reference: &str) -> Result<String, String> {
+    if let Some(rest) = reference.strip_prefix("oci://") {
+        return Ok(rest.to_string());
+    }
+    if let Some(rest) = reference.strip_prefix("repo://") {
+        return map_registry_target(rest, env::var("GREENTIC_REPO_REGISTRY_BASE").ok()).ok_or_else(
+            || {
+                format!(
+                    "repo:// reference {reference} requires GREENTIC_REPO_REGISTRY_BASE to map to OCI"
+                )
+            },
+        );
+    }
+    if let Some(rest) = reference.strip_prefix("store://") {
+        return map_registry_target(rest, env::var("GREENTIC_STORE_REGISTRY_BASE").ok()).ok_or_else(
+            || {
+                format!(
+                    "store:// reference {reference} requires GREENTIC_STORE_REGISTRY_BASE to map to OCI"
+                )
+            },
+        );
+    }
+    Err(format!(
+        "unsupported bundle scheme for {reference}; expected local path, file://, oci://, repo://, or store://"
+    ))
+}
+
+fn map_registry_target(target: &str, base: Option<String>) -> Option<String> {
+    if target.contains('/') && (target.contains('@') || target.contains(':')) {
+        return Some(target.to_string());
+    }
+    let base = base?;
+    let normalized_base = base.trim_end_matches('/');
+    let normalized_target = target.trim_start_matches('/');
+    Some(format!("{normalized_base}/{normalized_target}"))
 }
 
 fn run_install(sub_matches: &ArgMatches, debug: bool, locale: &str) -> i32 {
@@ -418,8 +600,11 @@ fn ensure_install_prereqs(debug: bool, locale: &str) -> i32 {
     let binstall_args = vec![
         "binstall".to_string(),
         "-y".to_string(),
+        "--version".to_string(),
+        "0.4".to_string(),
         "greentic-dev".to_string(),
         "greentic-operator".to_string(),
+        "greentic-start".to_string(),
     ];
     run_cargo(&binstall_args, debug, locale)
 }
@@ -959,6 +1144,14 @@ fn passthrough(binary: &str, args: &[String], debug: bool, locale: &str) -> i32 
                 match binary {
                     DEV_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_dev")),
                     OP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_op")),
+                    START_BIN => eprintln!(
+                        "{}",
+                        t_or(
+                            locale,
+                            "gtc.err.bin_missing_start",
+                            "greentic-start is not installed. Run: gtc install"
+                        )
+                    ),
                     _ => eprintln!("{}", t(locale, "gtc.err.exec_failed")),
                 }
             } else {
@@ -972,7 +1165,7 @@ fn passthrough(binary: &str, args: &[String], debug: bool, locale: &str) -> i32 
 fn run_doctor(locale: &str) -> i32 {
     let mut failed = false;
 
-    for binary in [DEV_BIN, OP_BIN] {
+    for binary in [DEV_BIN, OP_BIN, START_BIN] {
         match ProcessCommand::new(binary).arg("--version").output() {
             Ok(output) => {
                 let status_label = if output.status.success() {
@@ -991,6 +1184,14 @@ fn run_doctor(locale: &str) -> i32 {
                 match binary {
                     DEV_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_dev")),
                     OP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_op")),
+                    START_BIN => eprintln!(
+                        "{}",
+                        t_or(
+                            locale,
+                            "gtc.err.bin_missing_start",
+                            "greentic-start is not installed. Run: gtc install"
+                        )
+                    ),
                     _ => {}
                 }
             }
