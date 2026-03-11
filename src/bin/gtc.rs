@@ -12,8 +12,13 @@ use std::sync::OnceLock;
 
 use clap::{Arg, ArgAction, ArgMatches, Command};
 use directories::BaseDirs;
-use greentic_distributor_client::{OciPackFetcher, PackFetchOptions, oci_packs::DefaultRegistryClient};
+use greentic_distributor_client::{
+    OciPackFetcher, PackFetchOptions, oci_packs::DefaultRegistryClient,
+};
 use greentic_i18n::{normalize_locale, select_locale_with_sources};
+use greentic_start::{
+    CloudflaredModeArg, NatsModeArg, NgrokModeArg, RestartTarget, StartRequest, run_start_request,
+};
 use serde::Deserialize;
 use serde_json::Value;
 use tempfile::TempDir;
@@ -23,7 +28,6 @@ use crate::dist::build_adapter;
 const DEV_BIN: &str = "greentic-dev";
 const OP_BIN: &str = "greentic-operator";
 const PACK_BIN: &str = "greentic-pack";
-const START_BIN: &str = "greentic-start";
 
 const LOCALES_JSON: &str = include_str!("../../assets/i18n/locales.json");
 include!(concat!(env!("OUT_DIR"), "/embedded_i18n.rs"));
@@ -135,7 +139,7 @@ fn build_cli(locale: &str) -> Command {
                 .about(t_or(
                     locale,
                     "gtc.cmd.start.about",
-                    "Start a bundle from local or remote reference."
+                    "Start a bundle from local or remote reference.",
                 ))
                 .arg(
                     Arg::new("bundle-ref")
@@ -144,7 +148,7 @@ fn build_cli(locale: &str) -> Command {
                         .help(t_or(
                             locale,
                             "gtc.arg.bundle_ref.help",
-                            "Bundle path/ref: local path, file://, oci://, repo://, store://"
+                            "Bundle path/ref: local path, file://, oci://, repo://, store://",
                         )),
                 )
                 .arg(cmd_args.clone()),
@@ -282,25 +286,242 @@ struct StartBundleResolution {
 
 fn run_start(sub_matches: &ArgMatches, debug: bool, locale: &str) -> i32 {
     let Some(bundle_ref) = sub_matches.get_one::<String>("bundle-ref") else {
-        eprintln!("{}", t_or(locale, "gtc.start.err.bundle_required", "bundle ref is required"));
+        eprintln!(
+            "{}",
+            t_or(
+                locale,
+                "gtc.start.err.bundle_required",
+                "bundle ref is required"
+            )
+        );
         return 2;
     };
     let tail = collect_tail(sub_matches);
     let resolved = match resolve_bundle_reference(bundle_ref) {
         Ok(value) => value,
         Err(err) => {
-            eprintln!("{}: {err}", t_or(locale, "gtc.start.err.resolve_failed", "failed to resolve bundle"));
+            eprintln!(
+                "{}: {err}",
+                t_or(
+                    locale,
+                    "gtc.start.err.resolve_failed",
+                    "failed to resolve bundle"
+                )
+            );
             return 1;
         }
     };
-    let mut forwarded = vec![
-        "demo".to_string(),
-        "start".to_string(),
-        "--bundle".to_string(),
-        resolved.bundle_dir.display().to_string(),
-    ];
-    forwarded.extend(tail);
-    passthrough(START_BIN, &forwarded, debug, locale)
+    let request = match parse_start_request(&tail, resolved.bundle_dir) {
+        Ok(value) => value,
+        Err(err) => {
+            eprintln!(
+                "{}: {err}",
+                t_or(
+                    locale,
+                    "gtc.start.err.invalid_args",
+                    "invalid start arguments"
+                )
+            );
+            return 2;
+        }
+    };
+    if debug {
+        eprintln!(
+            "{} gtc-start-lib bundle={:?} tenant={:?} team={:?}",
+            t(locale, "gtc.debug.exec"),
+            request.bundle,
+            request.tenant,
+            request.team
+        );
+    }
+    match run_start_request(request) {
+        Ok(()) => 0,
+        Err(err) => {
+            eprintln!(
+                "{}: {err}",
+                t_or(locale, "gtc.start.err.run_failed", "failed to start bundle")
+            );
+            1
+        }
+    }
+}
+
+fn parse_start_request(tail: &[String], bundle_dir: PathBuf) -> Result<StartRequest, String> {
+    let mut request = StartRequest {
+        bundle: Some(bundle_dir.display().to_string()),
+        tenant: None,
+        team: None,
+        no_nats: false,
+        nats: NatsModeArg::Off,
+        nats_url: None,
+        config: None,
+        cloudflared: CloudflaredModeArg::On,
+        cloudflared_binary: None,
+        ngrok: NgrokModeArg::Off,
+        ngrok_binary: None,
+        runner_binary: None,
+        restart: Vec::new(),
+        log_dir: None,
+        verbose: false,
+        quiet: false,
+    };
+
+    let mut idx = 0usize;
+    while idx < tail.len() {
+        let arg = &tail[idx];
+        match arg.as_str() {
+            "--tenant" => {
+                idx += 1;
+                request.tenant = Some(required_value(tail, idx, "--tenant")?);
+            }
+            "--team" => {
+                idx += 1;
+                request.team = Some(required_value(tail, idx, "--team")?);
+            }
+            "--no-nats" => request.no_nats = true,
+            "--nats" => {
+                idx += 1;
+                request.nats = parse_nats_mode(&required_value(tail, idx, "--nats")?)?;
+            }
+            "--nats-url" => {
+                idx += 1;
+                request.nats_url = Some(required_value(tail, idx, "--nats-url")?);
+            }
+            "--config" => {
+                idx += 1;
+                request.config = Some(PathBuf::from(required_value(tail, idx, "--config")?));
+            }
+            "--cloudflared" => {
+                idx += 1;
+                request.cloudflared =
+                    parse_cloudflared_mode(&required_value(tail, idx, "--cloudflared")?)?;
+            }
+            "--cloudflared-binary" => {
+                idx += 1;
+                request.cloudflared_binary = Some(PathBuf::from(required_value(
+                    tail,
+                    idx,
+                    "--cloudflared-binary",
+                )?));
+            }
+            "--ngrok" => {
+                idx += 1;
+                request.ngrok = parse_ngrok_mode(&required_value(tail, idx, "--ngrok")?)?;
+            }
+            "--ngrok-binary" => {
+                idx += 1;
+                request.ngrok_binary =
+                    Some(PathBuf::from(required_value(tail, idx, "--ngrok-binary")?));
+            }
+            "--runner-binary" => {
+                idx += 1;
+                request.runner_binary =
+                    Some(PathBuf::from(required_value(tail, idx, "--runner-binary")?));
+            }
+            "--restart" => {
+                idx += 1;
+                let value = required_value(tail, idx, "--restart")?;
+                for part in value.split(',').filter(|part| !part.is_empty()) {
+                    request.restart.push(parse_restart_target(part)?);
+                }
+            }
+            "--log-dir" => {
+                idx += 1;
+                request.log_dir = Some(PathBuf::from(required_value(tail, idx, "--log-dir")?));
+            }
+            "--verbose" => request.verbose = true,
+            "--quiet" => request.quiet = true,
+            "--bundle" => {
+                return Err(
+                    "--bundle is managed by gtc start; pass the bundle ref as the main argument"
+                        .to_string(),
+                );
+            }
+            other => {
+                if let Some(value) = other.strip_prefix("--tenant=") {
+                    request.tenant = Some(value.to_string());
+                } else if let Some(value) = other.strip_prefix("--team=") {
+                    request.team = Some(value.to_string());
+                } else if let Some(value) = other.strip_prefix("--nats=") {
+                    request.nats = parse_nats_mode(value)?;
+                } else if let Some(value) = other.strip_prefix("--nats-url=") {
+                    request.nats_url = Some(value.to_string());
+                } else if let Some(value) = other.strip_prefix("--config=") {
+                    request.config = Some(PathBuf::from(value));
+                } else if let Some(value) = other.strip_prefix("--cloudflared=") {
+                    request.cloudflared = parse_cloudflared_mode(value)?;
+                } else if let Some(value) = other.strip_prefix("--cloudflared-binary=") {
+                    request.cloudflared_binary = Some(PathBuf::from(value));
+                } else if let Some(value) = other.strip_prefix("--ngrok=") {
+                    request.ngrok = parse_ngrok_mode(value)?;
+                } else if let Some(value) = other.strip_prefix("--ngrok-binary=") {
+                    request.ngrok_binary = Some(PathBuf::from(value));
+                } else if let Some(value) = other.strip_prefix("--runner-binary=") {
+                    request.runner_binary = Some(PathBuf::from(value));
+                } else if let Some(value) = other.strip_prefix("--restart=") {
+                    for part in value.split(',').filter(|part| !part.is_empty()) {
+                        request.restart.push(parse_restart_target(part)?);
+                    }
+                } else if let Some(value) = other.strip_prefix("--log-dir=") {
+                    request.log_dir = Some(PathBuf::from(value));
+                } else if other.starts_with("--bundle=") {
+                    return Err(
+                        "--bundle is managed by gtc start; pass the bundle ref as the main argument"
+                            .to_string(),
+                    );
+                } else {
+                    return Err(format!("unsupported start argument: {other}"));
+                }
+            }
+        }
+        idx += 1;
+    }
+
+    Ok(request)
+}
+
+fn required_value(args: &[String], idx: usize, flag: &str) -> Result<String, String> {
+    args.get(idx)
+        .cloned()
+        .ok_or_else(|| format!("missing value for {flag}"))
+}
+
+fn parse_nats_mode(value: &str) -> Result<NatsModeArg, String> {
+    match value {
+        "off" => Ok(NatsModeArg::Off),
+        "on" => Ok(NatsModeArg::On),
+        "external" => Ok(NatsModeArg::External),
+        other => Err(format!("unsupported --nats value: {other}")),
+    }
+}
+
+fn parse_cloudflared_mode(value: &str) -> Result<CloudflaredModeArg, String> {
+    match value {
+        "on" => Ok(CloudflaredModeArg::On),
+        "off" => Ok(CloudflaredModeArg::Off),
+        other => Err(format!("unsupported --cloudflared value: {other}")),
+    }
+}
+
+fn parse_ngrok_mode(value: &str) -> Result<NgrokModeArg, String> {
+    match value {
+        "on" => Ok(NgrokModeArg::On),
+        "off" => Ok(NgrokModeArg::Off),
+        other => Err(format!("unsupported --ngrok value: {other}")),
+    }
+}
+
+fn parse_restart_target(value: &str) -> Result<RestartTarget, String> {
+    match value {
+        "all" => Ok(RestartTarget::All),
+        "cloudflared" => Ok(RestartTarget::Cloudflared),
+        "ngrok" => Ok(RestartTarget::Ngrok),
+        "nats" => Ok(RestartTarget::Nats),
+        "gateway" => Ok(RestartTarget::Gateway),
+        "egress" => Ok(RestartTarget::Egress),
+        "subscriptions" => Ok(RestartTarget::Subscriptions),
+        other => Err(format!("unsupported --restart target: {other}")),
+    }
 }
 
 fn resolve_bundle_reference(reference: &str) -> Result<StartBundleResolution, String> {
@@ -356,7 +577,10 @@ fn resolve_local_bundle_path(path: PathBuf) -> Result<StartBundleResolution, Str
 
 fn resolve_archive_bundle_path(archive_path: PathBuf) -> Result<StartBundleResolution, String> {
     if !archive_path.is_file() {
-        return Err(format!("bundle artifact is not a file: {}", archive_path.display()));
+        return Err(format!(
+            "bundle artifact is not a file: {}",
+            archive_path.display()
+        ));
     }
     let temp = tempfile::tempdir().map_err(|e| e.to_string())?;
     let staging = temp.path().join("staging");
@@ -604,7 +828,6 @@ fn ensure_install_prereqs(debug: bool, locale: &str) -> i32 {
         "0.4".to_string(),
         "greentic-dev".to_string(),
         "greentic-operator".to_string(),
-        "greentic-start".to_string(),
     ];
     run_cargo(&binstall_args, debug, locale)
 }
@@ -1144,14 +1367,6 @@ fn passthrough(binary: &str, args: &[String], debug: bool, locale: &str) -> i32 
                 match binary {
                     DEV_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_dev")),
                     OP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_op")),
-                    START_BIN => eprintln!(
-                        "{}",
-                        t_or(
-                            locale,
-                            "gtc.err.bin_missing_start",
-                            "greentic-start is not installed. Run: gtc install"
-                        )
-                    ),
                     _ => eprintln!("{}", t(locale, "gtc.err.exec_failed")),
                 }
             } else {
@@ -1165,7 +1380,7 @@ fn passthrough(binary: &str, args: &[String], debug: bool, locale: &str) -> i32 
 fn run_doctor(locale: &str) -> i32 {
     let mut failed = false;
 
-    for binary in [DEV_BIN, OP_BIN, START_BIN] {
+    for binary in [DEV_BIN, OP_BIN] {
         match ProcessCommand::new(binary).arg("--version").output() {
             Ok(output) => {
                 let status_label = if output.status.success() {
@@ -1184,14 +1399,6 @@ fn run_doctor(locale: &str) -> i32 {
                 match binary {
                     DEV_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_dev")),
                     OP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_op")),
-                    START_BIN => eprintln!(
-                        "{}",
-                        t_or(
-                            locale,
-                            "gtc.err.bin_missing_start",
-                            "greentic-start is not installed. Run: gtc install"
-                        )
-                    ),
                     _ => {}
                 }
             }
@@ -1375,9 +1582,11 @@ impl ArtifactKind {
 #[cfg(test)]
 mod tests {
     use super::{
-        collect_tail, detect_locale, locale_from_args, resolve_tenant_key, tenant_env_var_name,
+        collect_tail, detect_locale, locale_from_args, parse_start_request, resolve_tenant_key,
+        tenant_env_var_name,
     };
     use clap::{Arg, ArgMatches, Command};
+    use std::path::{Path, PathBuf};
 
     #[test]
     fn locale_arg_is_detected_from_equals_flag() {
@@ -1448,5 +1657,43 @@ mod tests {
         unsafe {
             std::env::remove_var(&env_name);
         }
+    }
+
+    #[test]
+    fn parse_start_request_maps_common_flags() {
+        let request = parse_start_request(
+            &[
+                "--tenant".to_string(),
+                "demo".to_string(),
+                "--team=default".to_string(),
+                "--nats".to_string(),
+                "off".to_string(),
+                "--cloudflared=off".to_string(),
+                "--ngrok".to_string(),
+                "off".to_string(),
+                "--runner-binary".to_string(),
+                "/tmp/runner".to_string(),
+            ],
+            PathBuf::from("/tmp/bundle"),
+        )
+        .expect("request");
+
+        assert_eq!(request.bundle.as_deref(), Some("/tmp/bundle"));
+        assert_eq!(request.tenant.as_deref(), Some("demo"));
+        assert_eq!(request.team.as_deref(), Some("default"));
+        assert_eq!(
+            request.runner_binary.as_deref(),
+            Some(Path::new("/tmp/runner"))
+        );
+    }
+
+    #[test]
+    fn parse_start_request_rejects_bundle_override() {
+        let err = parse_start_request(
+            &["--bundle".to_string(), "/tmp/other".to_string()],
+            PathBuf::from("/tmp/bundle"),
+        )
+        .unwrap_err();
+        assert!(err.contains("--bundle is managed by gtc start"));
     }
 }
