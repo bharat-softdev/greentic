@@ -1088,8 +1088,18 @@ impl I18nCatalog {
 
         let mut dictionaries = HashMap::new();
         for (locale, raw_json) in EMBEDDED_LOCALES {
-            if let Ok(map) = parse_flat_json_map(raw_json) {
-                dictionaries.insert(normalize_locale(locale), map);
+            match parse_flat_json_map(raw_json) {
+                Ok(map) => {
+                    let normalized_key = normalize_locale(locale);
+                    // Don't overwrite existing entries - prefer the primary locale (e.g., "en" over "en-GB")
+                    // since EMBEDDED_LOCALES is sorted alphabetically, "en" comes before "en-GB"
+                    if !dictionaries.contains_key(&normalized_key) {
+                        dictionaries.insert(normalized_key, map);
+                    }
+                }
+                Err(_e) => {
+                    // Silently skip invalid JSON files
+                }
             }
         }
 
