@@ -833,7 +833,7 @@ fn ensure_install_prereqs(debug: bool, locale: &str) -> i32 {
         }
     }
 
-    for package in [DEV_BIN, OP_BIN, BUNDLE_BIN] {
+    for package in [DEV_BIN, OP_BIN, BUNDLE_BIN, SETUP_BIN] {
         let binstall_args = vec![
             "binstall".to_string(),
             "-y".to_string(),
@@ -1399,7 +1399,7 @@ fn passthrough(binary: &str, args: &[String], debug: bool, locale: &str) -> i32 
 fn run_doctor(locale: &str) -> i32 {
     let mut failed = false;
 
-    for binary in [DEV_BIN, OP_BIN, SETUP_BIN] {
+    for binary in [DEV_BIN, OP_BIN, BUNDLE_BIN, SETUP_BIN] {
         match ProcessCommand::new(binary).arg("--version").output() {
             Ok(output) => {
                 let status_label = if output.status.success() {
@@ -1418,6 +1418,14 @@ fn run_doctor(locale: &str) -> i32 {
                 match binary {
                     DEV_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_dev")),
                     OP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_op")),
+                    BUNDLE_BIN => eprintln!(
+                        "{}",
+                        t_or(
+                            locale,
+                            "gtc.err.bin_missing_bundle",
+                            "greentic-bundle not found in PATH. Install with: cargo install greentic-bundle",
+                        )
+                    ),
                     SETUP_BIN => eprintln!("{}", t(locale, "gtc.err.bin_missing_setup")),
                     _ => {}
                 }
