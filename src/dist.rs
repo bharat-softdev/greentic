@@ -194,9 +194,7 @@ impl TokenRegistryClient {
         }
     }
 
-    fn accepted_layer_media_types<'a>(
-        accepted_manifest_types: &'a [&'a str],
-    ) -> Vec<&'a str> {
+    fn accepted_layer_media_types<'a>(accepted_manifest_types: &'a [&'a str]) -> Vec<&'a str> {
         let mut types = accepted_manifest_types.to_vec();
         for extra in [
             "application/json",
